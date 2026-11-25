@@ -1,0 +1,124 @@
+
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@plugin "@tailwindcss/forms";
+
+@theme {
+    --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+}
+
+
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@plugin "@tailwindcss/forms";
+
+@theme {
+    --color-navy: #10263d;
+    --color-gold: #c69a48;
+    --color-ivory: #f8f5ef;
+    --color-stone: #eeeee5;
+    --color-dark-gold: #805d27;
+    --color-brand-border: #d5cec0;
+
+    --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-heading: 'Cormorant Garamond', serif;
+
+    --breakpoint-md: 50rem;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+}
+
+::selection {
+    background-color: #c69a48;
+    color: #10263d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+html {
+    scroll-behavior: smooth;
+}
+
+#availability-search,
+#location,
+#gallery,
+#experiences,
+#accommodation {
+    scroll-margin-top: 130px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+@layer components {
+    .heading-hero {
+        @apply font-heading font-medium
+               text-[40px] md:text-[56px]
+               lg:text-[72px] leading-[1.1];
+    }
+
+    .heading-section {
+        @apply font-heading font-medium
+               text-[32px] md:text-[38px]
+               lg:text-[44px] leading-[1.15];
+    }
+
+    .heading-feature {
+        @apply font-heading font-medium
+               text-[34px] md:text-[40px]
+               lg:text-[48px] leading-[1.15];
+    }
+
+    .heading-sub {
+        @apply font-heading font-medium
+               text-[24px] md:text-[26px]
+               lg:text-[28px] leading-tight;
+    }
+
+    .heading-card {
+        @apply font-heading font-medium
+               text-[20px] lg:text-[22px]
+               leading-tight;
+    }
+
+    .section-label {
+        @apply text-[10px] md:text-[11px]
+               font-medium uppercase
+               tracking-[0.22em] text-dark-gold;
+    }
+
+    .body-copy {
+        @apply text-[14px] md:text-[15px]
+               leading-[1.8] text-[#42566e];
+    }
+}
+
