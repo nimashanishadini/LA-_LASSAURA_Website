@@ -8,11 +8,8 @@
 
     {{-- Contact Information --}}
     <p class="mt-5 text-[14px] leading-[1.8] text-[#42566e]">
-        The villa’s verified email, international telephone
-        number and WhatsApp number are awaiting confirmation.
-        This preview does not send messages.
-        Explore your stay preferences using the planning
-        form below.
+        Have a question about our rooms or planning your visit?
+        Send us an inquiry and our team will help you plan your stay.
     </p>
 
     {{-- Booking Button --}}

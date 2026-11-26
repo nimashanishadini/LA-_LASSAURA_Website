@@ -14,11 +14,15 @@
 
     <section class="bg-ivory px-5 py-12 sm:px-8 lg:py-[56px]">
 
-        <div class="mx-auto max-w-[590px]">
+        <div class="mx-auto max-w-[1060px]">
 
-            @include('website.sections.contact.details')
-
-            @include('website.sections.contact.map')
+            <div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
+                <div>
+                    @include('website.sections.contact.details')
+                    @include('website.sections.contact.map')
+                </div>
+                @include('website.sections.contact.inquiry-form')
+            </div>
 
         </div>
 

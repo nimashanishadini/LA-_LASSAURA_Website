@@ -29,6 +29,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('booking_policies');
         Schema::table('villas', function (Blueprint $table) {
+            $table->dropIndex(['category']);
             $table->dropColumn('category');
         });
         // Preserve nullable capacities rather than invent values during rollback.

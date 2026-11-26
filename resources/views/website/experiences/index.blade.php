@@ -19,6 +19,8 @@
     {{-- Experience Gallery --}}
     @include('website.sections.experiences.gallery')
 
+    @include('website.sections.experiences.feedback')
+
     {{-- Call to Action --}}
     @include('website.sections.home.cta')
 

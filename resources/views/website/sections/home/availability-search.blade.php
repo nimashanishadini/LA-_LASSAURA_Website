@@ -8,7 +8,6 @@
         checkOut: '',
         adults: 2,
         children: 0,
-        rooms: 1,
         
 
         {{-- get today() {
@@ -38,8 +37,7 @@
     checkIn: checkIn,
     checkOut: checkOut,
     adults: adults,
-    children: children,
-    rooms: rooms
+    children: children
 })"
         class="grid grid-cols-1 items-end gap-5
                border border-brand-border/60
@@ -135,7 +133,7 @@
         </div>
 
         {{-- Children --}}
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-3">
 
             <label
                 for="children"
@@ -156,36 +154,6 @@
                        focus:border-gold focus:ring-0"
             >
                 @for ($i = 0; $i <= 6; $i++)
-                    <option value="{{ $i }}">
-                        {{ $i }}
-                    </option>
-                @endfor
-            </select>
-
-        </div>
-
-        {{-- Rooms --}}
-        <div class="lg:col-span-2">
-
-            <label
-                for="rooms"
-                class="mb-3 block text-[11px]
-                       font-medium uppercase
-                       tracking-[0.12em] text-[#52647a]"
-            >
-                Rooms
-            </label>
-
-            <select
-                id="rooms"
-                name="rooms"
-                x-model.number="rooms"
-                class="h-10 w-full border-0 border-b
-                       border-brand-border bg-transparent
-                       pl-1 pr-7 text-[13px] text-navy
-                       focus:border-gold focus:ring-0"
-            >
-                @for ($i = 1; $i <= 4; $i++)
                     <option value="{{ $i }}">
                         {{ $i }}
                     </option>
@@ -227,8 +195,7 @@
     <p class="mt-3 text-center text-[11px]
               font-medium leading-relaxed text-[#52647a]">
 
-        A preview of your perfect escape.
-        Availability and rates confirmed directly by the villa.
+        One room per request. Dates are reserved only after property approval.
 
     </p>
 

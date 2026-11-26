@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
+use App\Models\Review;
 use Illuminate\View\View;
 
 class ExperienceController extends Controller
@@ -73,9 +74,14 @@ class ExperienceController extends Controller
             ],
         ];
 
+        $approved = Review::where('status', 'approved');
+        $reviewCount = (clone $approved)->count();
+        $averageRating = (clone $approved)->avg('rating');
+        $reviews = $approved->select('id', 'name', 'rating', 'comment', 'created_at')->latest()->paginate(6, ['*'], 'reviews_page')->fragment('guest-feedback');
+
         return view('website.experiences.index', compact(
             'experiences',
-            'galleryImages'
+            'galleryImages', 'reviews', 'reviewCount', 'averageRating'
         ));
     }
 }
