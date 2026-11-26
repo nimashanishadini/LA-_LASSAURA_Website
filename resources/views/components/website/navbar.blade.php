@@ -11,7 +11,6 @@
             'Experiences' => route('experiences.index'),
             'Gallery' => route('gallery.index'),
             'Contact' => route('contact.index'),
-            'My bookings' => route('bookings.index'),
         ];
 
         $activePage = match (true) {
@@ -20,7 +19,6 @@
             request()->routeIs('experiences.*') => 'Experiences',
             request()->routeIs('gallery.*') => 'Gallery',
             request()->routeIs('contact.*') => 'Contact',
-            request()->routeIs('bookings.*') => 'My bookings',
             default => null,
         };
     @endphp

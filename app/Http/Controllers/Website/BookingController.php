@@ -14,7 +14,7 @@ class BookingController extends Controller
 {
     public function create(Request $request)
     {
-        return view('website.bookings.create', ['rooms' => Villa::active()->orderBy('name')->get()]);
+        return redirect()->route('home', array_merge($request->only(['room', 'check_in', 'check_out', 'adults', 'children']), ['booking' => 1]));
     }
 
     public function quote(Request $request, BookingWorkflow $workflow)
@@ -27,7 +27,9 @@ class BookingController extends Controller
 
     public function quoteShow(Request $request, string $quote)
     {
-        return view('website.bookings.quote', ['quote' => BookingQuote::with('villa')->where('user_id', $request->user()->id)->findOrFail($quote)]);
+        $quote = BookingQuote::with('villa')->where('user_id', $request->user()->id)->findOrFail($quote);
+
+        return $request->expectsJson() ? response()->json(['data' => $quote]) : redirect()->route('home', ['booking' => 1, 'quote' => $quote->id]);
     }
 
     public function store(Request $request, BookingWorkflow $workflow)
@@ -47,14 +49,16 @@ class BookingController extends Controller
     {
         $bookings = Booking::with('villa')->where('user_id', $request->user()->id)->latest()->paginate(10);
 
-        return $request->expectsJson() ? response()->json($bookings) : view('website.bookings.index', compact('bookings'));
+        return $request->expectsJson() ? response()->json($bookings) : redirect()->route('home', ['booking' => 1, 'history' => 1]);
     }
 
     public function show(Request $request, Booking $booking, BookingWorkflow $workflow)
     {
         abort_unless($booking->user_id === $request->user()->id, 404);
 
-        return view('website.bookings.show', ['booking' => $booking->load('villa'), 'revision' => $booking->proposed_snapshot ? $workflow->revision($booking) : null, 'events' => InventoryEvent::where('booking_id', $booking->id)->orderBy('id')->get()]);
+        $data = ['booking' => $booking->load('villa'), 'revision' => $booking->proposed_snapshot ? $workflow->revision($booking) : null, 'events' => InventoryEvent::where('booking_id', $booking->id)->orderBy('id')->get()];
+
+        return $request->expectsJson() ? response()->json(['data' => $data]) : redirect()->route('home', ['booking' => 1, 'reference' => $booking->reference]);
     }
 
     public function accept(Request $request, Booking $booking, BookingWorkflow $workflow)
@@ -62,6 +66,10 @@ class BookingController extends Controller
         abort_unless($booking->user_id === $request->user()->id, 404);
         $data = $request->validate(['revision' => ['required', 'string', 'size:64'], 'accepted_terms' => ['required', 'accepted']]);
         $booking = $workflow->accept($booking, $request->user()->id, $data['revision']);
+
+        if ($request->expectsJson()) {
+            return response()->json(['data' => $booking]);
+        }
 
         return back()->with('status', $booking->proposed_snapshot ? 'The price or terms changed again. Please review the latest revision below.' : 'Revised quote accepted. Your request is still pending admin approval.');
     }
@@ -71,6 +79,6 @@ class BookingController extends Controller
         abort_unless($booking->user_id === $request->user()->id, 404);
         $workflow->cancelPending($booking, $request->user()->id);
 
-        return back()->with('status', 'Pending request cancelled.');
+        return $request->expectsJson() ? response()->json(['message' => 'Pending request cancelled.']) : redirect()->route('home', ['booking' => 1, 'reference' => $booking->reference]);
     }
 }

@@ -13,9 +13,17 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
-    })
+    
+->withMiddleware(function (Middleware $middleware): void {
+    $middleware->redirectUsersTo(function (Request $request) {
+        if ($request->user()->canAccessAdmin()) {
+            return route('admin.dashboard');
+        }
+
+        return route('home');
+    });
+})
+
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(fn (Request $request, Throwable $error) => $request->is('api/*') || $request->expectsJson());
         $exceptions->render(function (InventoryConflict $exception, Request $request) {
