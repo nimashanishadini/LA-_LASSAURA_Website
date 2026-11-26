@@ -30,7 +30,13 @@ Route::get('/rooms/{room:slug}', [RoomController::class, 'show'])
     ->name('rooms.show');
 
 // Dashboard
+
+// Role-based Dashboard Redirect
 Route::get('/dashboard', function () {
+    if (auth()->user()->canAccessAdmin()) {
+        return redirect()->route('admin.dashboard');
+    }
+
     return redirect()->route('bookings.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -55,7 +61,9 @@ Route::get('/contact', [ContactController::class, 'index'])
     ->name('contact.index');
 require __DIR__.'/auth.php';
 
-Route::get('/admin/login', fn () => redirect()->route('login'))->name('admin.login');
+
+Route::get('/admin/login', function () { return redirect()->route('admin.dashboard');})->name('admin.login');
+
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin'])->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::middleware('can:manage-rooms')->group(function () {
@@ -94,7 +102,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin', 
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/booking', [BookingController::class, 'create'])->name('bookings.create');
     Route::post('/booking/quotes', [BookingController::class, 'quote'])->middleware('throttle:30,1')->name('bookings.quote');
     Route::get('/booking/quotes/{quote}', [BookingController::class, 'quoteShow'])->name('bookings.quote.show');
     Route::post('/bookings', [BookingController::class, 'store'])->middleware('throttle:10,1')->name('bookings.store');
@@ -122,3 +129,5 @@ Route::prefix('api/v1')->middleware([BookingApi::class, 'auth', 'throttle:30,1']
     Route::post('admin/bookings/{booking}/approve', [App\Http\Controllers\Admin\BookingController::class, 'approve'])->middleware('can:manage-bookings');
     Route::post('admin/bookings/{booking}/reject', [App\Http\Controllers\Admin\BookingController::class, 'reject'])->middleware('can:manage-bookings');
 });
+
+Route::get('/booking', [BookingController::class, 'create'])->name('bookings.create');

@@ -180,10 +180,11 @@ does not mean configured rates, approval or full booking operation is complete.
 
 ## Customer requests and admin approval — 26 November 2026
 
-The public Book Your Stay actions and room-specific Request links now lead to
-`/booking` (login/registration required). Selected dates survive sign-in and
-registration. The old seven-step non-saving preview has been replaced by the
-actual request flow. There is one room per request in this implementation; the
+The public Book Your Stay actions and room-specific Request buttons open the
+seven-step native dialog on the current page. Dates, guest counts, available room
+selection, inline login/registration, guest details, quote/terms review and pending
+receipt all remain inside this popup. The old non-saving preview now submits real
+requests. Dedicated customer booking page templates have been removed. There is one room per request in this implementation; the
 owner's decision about a future multi-room flow is still deferred. The misleading
 home room-count control is removed rather than silently ignoring a count.
 
@@ -200,7 +201,7 @@ home room-count control is removed rather than silently ignoring a count.
    and room, rechecks current dates/capacity/rates/terms, then calls the central
    allocation service. Confirmed nights appear in the calendar immediately.
 5. Changed settlement economics or property terms generate a proposed revision,
-   keep status pending and allocate nothing. My Bookings shows the proposal.
+   keep status pending and allocate nothing. The popup Your requests area shows the proposal.
    Customer accepts the displayed revision hash; if rates changed yet again, a
    new proposal replaces it without acceptance/confirmation. Admin must approve
    after acceptance. FX-only changes do not reprice LKR settlement; accepted FX
@@ -215,7 +216,7 @@ cancellation/refund text. Null/unconfigured policies block quote creation; no
 property rules or prices are seeded by this feature. Confirmed quotes and terms
 remain unchanged when current rates/policies are edited.
 
-Customer My Bookings details are scoped to user_id and UUID reference; customers
+Customer popup request details are scoped to user_id and UUID reference; customers
 cannot see other customers' requests/quotes. Editor/finance/housekeeping cannot
 approve bookings. Internal submission hashes are not serialized in API output.
 Account deletion with booking records returns an explicit review-needed error,
@@ -240,3 +241,25 @@ Validation includes owned/expired quotes, duplicate and altered-payload replay,
 revised prices/terms, unauthorized approval, inventory conflicts and calendar
 visibility. The opt-in real MySQL concurrency test also accepts `workflow` to test
 two full approval workflows against the same nights in its isolated schema.
+
+
+### Popup presentation update
+
+Per owner preference, there is no My Bookings navbar page. The dialog's Your
+requests area loads owned requests, history/status, cancellation of pending
+requests and revised-quote acceptance through JSON endpoints. Login/registration
+return safe user fields and a fresh CSRF token without navigation; the popup
+updates existing page token fields after session regeneration. Passwords are
+cleared after authentication attempts. Native dialog handles focus containment,
+Escape and backdrop close, and the dialog scrolls within the mobile viewport.
+
+Legacy `/booking`, owned quote URLs and booking-status email links redirect to
+the homepage with popup parameters. Anonymous status requests prompt inline
+sign-in; the backend still enforces ownership. Existing JSON and admin routes,
+pricing/expiry checks, idempotency, approval and inventory locks are preserved.
+No additional database migration is needed for this UI change.
+
+Verified with isolated SQLite fixtures in headless Chrome: all seven steps,
+inline registration, quote, pending submission, history, status refresh and
+pending cancellation completed without page navigation or JavaScript errors.
+Mobile dialog was checked at 390px; application/customer database was not used.

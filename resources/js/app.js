@@ -1,3 +1,5 @@
+import { bookingPopup } from './booking-popup';
+window.bookingPopup = bookingPopup;
 
 import './bootstrap';
 

@@ -51,7 +51,7 @@
                         <details class="mt-4 text-sm"><summary class="cursor-pointer">Nightly breakdown</summary><ul class="mt-3 space-y-2">@foreach($quote['nightly_lines'] as $line)<li>{{ $line['stay_date'] }} · LKR {{ $line['amount_lkr'] }} @if($line['discount_percent'] !== '0.00')({{ $line['discount_percent'] }}% discount)@endif</li>@endforeach</ul></details>
                     @endif
                     <p class="mt-3 text-xs text-[#42566e]">Price estimate only. Availability and booking confirmation are handled separately.</p>
-                    <a href="{{ route('bookings.create', ['room'=>$room->slug, 'check_in'=>request('check_in'), 'check_out'=>request('check_out')]) }}" class="mt-7 inline-flex min-h-11 items-center bg-gold px-6 py-3 text-sm font-medium hover:bg-dark-gold hover:text-white">Request {{ $room->name }} →</a>
+                    <button type="button" x-data @click="$dispatch('open-booking', { room: @js($room->slug), checkIn: @js(request('check_in')), checkOut: @js(request('check_out')) })" class="mt-7 inline-flex min-h-11 items-center bg-gold px-6 py-3 text-sm font-medium hover:bg-dark-gold hover:text-white">Request {{ $room->name }} →</button>
                 </div>
             </div>
             @if (count($galleryImages))

@@ -57,18 +57,18 @@ class BookingWorkflowTest extends TestCase
     {
         $room = $this->room();
         $user = User::factory()->create();
-        $this->actingAs($user)->get('/booking?room=coral')->assertOk()->assertSee('Choose your room and dates');
+        $this->actingAs($user)->get('/booking?room=coral')->assertRedirect(route('home', ['room' => 'coral', 'booking' => 1]));
         $this->post(route('bookings.quote'), ['room' => 'coral', 'check_in' => '2026-12-01', 'check_out' => '2026-12-03', 'adults' => 2, 'children' => 0])->assertRedirect();
         $quote = BookingQuote::firstOrFail();
-        $this->get(route('bookings.quote.show', $quote))->assertOk()->assertSee('LKR 30000.00');
+        $this->getJson(route('bookings.quote.show', $quote))->assertOk()->assertJsonPath('data.snapshot.total_lkr', '30000.00');
         $payload = ['quote_id' => $quote->id, 'name' => 'Guest Name', 'phone' => '+94771234567', 'accepted_terms' => 1, 'total_lkr' => '1', 'status' => 'confirmed'];
         $this->post(route('bookings.store'), $payload)->assertRedirect();
         $booking = Booking::firstOrFail();
         $this->assertSame('pending', $booking->status);
         $this->assertSame('30000.00', $booking->quote_snapshot['total_lkr']);
         $this->assertSame(0, VillaNight::count());
-        $this->get(route('bookings.index'))->assertOk()->assertSee($booking->reference);
-        $this->get(route('bookings.show', $booking))->assertOk()->assertSee('awaiting approval');
+        $this->getJson(route('bookings.index'))->assertOk()->assertSee($booking->reference);
+        $this->getJson(route('bookings.show', $booking))->assertOk()->assertJsonPath('data.booking.status', 'pending');
         $this->post(route('bookings.store'), $payload)->assertRedirect();
         $this->assertSame(1, Booking::count());
         $this->actingAs($this->owner())->get(route('admin.bookings.index'))->assertOk()->assertSee('Guest Name');
@@ -96,7 +96,7 @@ class BookingWorkflowTest extends TestCase
         $this->assertSame('pending', $booking->status);
         $this->assertSame('40000.00', $booking->proposed_snapshot['total_lkr']);
         $this->assertSame(0, VillaNight::count());
-        $this->actingAs($user)->get(route('bookings.show', $booking))->assertOk()->assertSee('Please review this updated quote');
+        $this->actingAs($user)->getJson(route('bookings.show', $booking))->assertOk()->assertJsonPath('data.booking.proposed_snapshot.total_lkr', '40000.00');
         $this->post(route('bookings.accept', $booking), ['revision' => $workflow->revision($booking), 'accepted_terms' => 1])->assertRedirect();
         $this->assertNull($booking->fresh()->proposed_snapshot);
         $this->assertSame('pending', $booking->fresh()->status);
@@ -196,9 +196,9 @@ class BookingWorkflowTest extends TestCase
 
     public function test_registration_keeps_selected_stay_and_profile_deletion_is_clear(): void
     {
-        $this->get('/booking?room=coral')->assertRedirect('/login');
+        $this->get('/booking?room=coral')->assertRedirect(route('home', ['room' => 'coral', 'booking' => 1]));
         $this->get('/login')->assertOk()->assertSee('Create an account');
-        $this->post('/register', ['name' => 'New guest', 'email' => 'new@example.com', 'password' => 'password', 'password_confirmation' => 'password'])->assertRedirect('/booking?room=coral');
+        $this->postJson('/register', ['name' => 'New guest', 'email' => 'new@example.com', 'password' => 'password', 'password_confirmation' => 'password'])->assertCreated()->assertJsonStructure(['user' => ['name', 'email'], 'csrf_token']);
         $room = $this->room();
         $user = auth()->user();
         app(BookingWorkflow::class)->submit($user->id, $this->quote($user, $room)->id, $this->guest($user));
