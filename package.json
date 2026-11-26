@@ -17,5 +17,10 @@
         "postcss": "^8.4.31",
         "tailwindcss": "^4.3.5",
         "vite": "^7.0.7"
+    },
+    "dependencies": {
+        "@fullcalendar/core": "^6.1.22",
+        "@fullcalendar/daygrid": "^6.1.22",
+        "@fullcalendar/interaction": "^6.1.22"
     }
 }

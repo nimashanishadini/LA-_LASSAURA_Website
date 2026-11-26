@@ -34,7 +34,7 @@
             </div>
 
             {{-- Explore Accommodation --}}
-            <a href="{{ url('/#accommodation-preview') }}"
+            <a href="{{ route('rooms.index') }}"
                class="group inline-flex w-fit shrink-0
                       items-center gap-5 border-b
                       border-gold/50 pb-3
@@ -176,7 +176,7 @@
 </button>
 
                     {{-- View Accommodation --}}
-                    <a href="{{ url('/#accommodation-preview') }}"
+                    <a href="{{ route('rooms.index') }}"
                        class="group inline-flex min-h-[44px]
                               items-center gap-5 border-b
                               border-gold/50 py-3

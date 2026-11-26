@@ -45,6 +45,11 @@ class Villa extends Model
         return 'slug';
     }
 
+    public function rates(): HasMany
+    {
+        return $this->hasMany(VillaRate::class);
+    }
+
     public function media(): HasMany
     {
         return $this->hasMany(VillaMedia::class)

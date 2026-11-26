@@ -26,13 +26,13 @@
 
                     </h2>
 
-                    <p class="mt-2 text-[11px]
+                    {{-- <p class="mt-2 text-[11px]
                               font-medium uppercase
                               tracking-[0.22em]">
 
                         Beach Side Villa
 
-                    </p>
+                    </p> --}}
 
                 </a>
 
@@ -62,11 +62,10 @@
                 @php
                     $footerLinks = [
                         ['label' => 'Home', 'url' => '/'],
-                        ['label' => 'Rooms', 'url' => '/#accommodation'],
+                        ['label' => 'Rooms', 'url' => '/rooms'],
                         ['label' => 'About', 'url' => '/#about'],
                         ['label' => 'Experiences', 'url' => '/#experiences'],
                         ['label' => 'Gallery', 'url' => '/#gallery'],
-                        ['label' => 'Location', 'url' => '/#location'],
                         ['label' => 'Contact', 'url' => '/contact'],
                         ['label' => 'FAQ', 'url' => '/faq'],
                     ];

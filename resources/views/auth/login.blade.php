@@ -43,5 +43,6 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+        <p class="mt-5 text-sm text-gray-600">New here? <a class="underline" href="{{ route('register') }}">Create an account</a></p>
     </form>
 </x-guest-layout>

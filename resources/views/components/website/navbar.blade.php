@@ -10,8 +10,8 @@
             'Rooms' => route('rooms.index'),
             'Experiences' => route('experiences.index'),
             'Gallery' => route('gallery.index'),
-            'Location' => route('location.index'),
             'Contact' => route('contact.index'),
+            'My bookings' => route('bookings.index'),
         ];
 
         $activePage = match (true) {
@@ -19,8 +19,8 @@
             request()->routeIs('rooms.*') => 'Rooms',
             request()->routeIs('experiences.*') => 'Experiences',
             request()->routeIs('gallery.*') => 'Gallery',
-            request()->routeIs('location.*') => 'Location',
             request()->routeIs('contact.*') => 'Contact',
+            request()->routeIs('bookings.*') => 'My bookings',
             default => null,
         };
     @endphp
@@ -49,11 +49,11 @@
                     LA LASSAURA
                 </span>
 
-                <span class="mt-1 block text-[9px]
+                {{-- <span class="mt-1 block text-[9px]
                              uppercase tracking-[0.25em]
                              text-navy sm:text-[11px]">
                     Beach Side Villa
-                </span>
+                </span> --}}
 
             </div>
 

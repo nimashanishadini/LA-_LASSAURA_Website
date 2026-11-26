@@ -39,6 +39,16 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    public function canAccessAdmin(): bool
+    {
+        return in_array($this->role, ['owner', 'manager', 'reception', 'finance', 'housekeeping', 'editor'], true);
+    }
+
+    public function canManageRooms(): bool
+    {
+        return in_array($this->role, ['owner', 'manager', 'editor'], true);
+    }
+
     protected function casts(): array
     {
         return [

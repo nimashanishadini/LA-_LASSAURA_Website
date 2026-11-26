@@ -78,7 +78,7 @@
             @if ($showDetailsLink)
 
                 <a
-                    href="{{ route('rooms.show') }}"
+                    href="{{ route('rooms.index') }}"
                     class="group inline-flex min-h-[44px] items-center gap-5 border-b border-gold/70 py-3 text-[13px] font-medium text-navy transition-colors hover:text-dark-gold"
                 >
                     View accommodation

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Booking;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,10 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        if (Booking::where('user_id', $user->id)->exists()) {
+            return back()->withErrors(['password' => 'Please contact the property to arrange account deletion while booking records are retained.'], 'userDeletion');
+        }
 
         Auth::logout();
 
