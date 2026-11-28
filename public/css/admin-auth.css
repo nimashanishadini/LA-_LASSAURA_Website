@@ -1,0 +1,1209 @@
+
+/* ==========================================
+   LA LASSAURA - ADMIN AUTHENTICATION
+   Stage 04.02
+========================================== */
+
+.admin-auth-body {
+    --auth-background: #0e1116;
+    --auth-panel: #151b24;
+    --auth-border: #334155;
+    --auth-gold: #c69a48;
+    --auth-gold-light: #e0b66a;
+    --auth-text: #f1f5f9;
+    --auth-muted: #94a3b8;
+
+    margin: 0;
+    min-width: 0;
+    min-height: 100vh;
+
+    background: var(--auth-background);
+    color: var(--auth-text);
+
+    -webkit-font-smoothing: antialiased;
+}
+
+.admin-auth-body *,
+.admin-auth-body *::before,
+.admin-auth-body *::after {
+    box-sizing: border-box;
+}
+
+.admin-auth-body [x-cloak] {
+    display: none !important;
+}
+
+
+/* ==========================================
+   MAIN LAYOUT
+========================================== */
+
+.admin-auth-layout {
+    display: grid;
+    grid-template-columns: 46% minmax(0, 1fr);
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+
+/* ==========================================
+   BRANDING SECTION
+========================================== */
+
+.admin-auth-brand {
+    position: relative;
+    isolation: isolate;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
+    min-height: 100vh;
+
+    padding: 60px 40px;
+
+    background-color: #192635;
+
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(10, 24, 37, 0.72),
+            rgba(10, 24, 37, 0.94)
+        ),
+        url('../images/home/admin-login.jpg');
+
+    background-size: cover;
+    background-position: center;
+
+    text-align: center;
+}
+
+.admin-auth-brand::before {
+    content: "";
+
+    position: absolute;
+    inset: 24px;
+
+    z-index: -1;
+
+    border: 1px solid rgba(198, 154, 72, 0.28);
+
+    pointer-events: none;
+}
+
+.admin-auth-brand-content {
+    width: 100%;
+    max-width: 440px;
+}
+
+.admin-auth-logo-link {
+    display: inline-block;
+
+    margin-bottom: 24px;
+
+    text-decoration: none;
+}
+
+.admin-auth-logo {
+    display: block;
+
+    width: 90px;
+    height: 90px;
+
+    padding: 5px;
+
+    object-fit: contain;
+
+    background: #f8f5ef;
+    border-radius: 50%;
+}
+
+.admin-auth-brand-name {
+    color: #e0b66a;
+
+    font-family: Georgia, serif;
+    font-size: clamp(25px, 3vw, 38px);
+    font-weight: 400;
+    letter-spacing: 4px;
+    line-height: 1.4;
+}
+
+.admin-auth-brand-subtitle {
+    margin: 10px 0 0;
+
+    color: #cbd5e1;
+
+    font-size: 10px;
+    letter-spacing: 4px;
+}
+
+.admin-auth-brand-divider {
+    width: 54px;
+    height: 1px;
+
+    margin: 36px auto;
+
+    background: var(--auth-gold);
+}
+
+.admin-auth-brand h2 {
+    margin: 0 0 16px;
+
+    color: #f8f5ef;
+
+    font-family: Georgia, serif;
+    font-size: clamp(25px, 3vw, 36px);
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+.admin-auth-brand-description {
+    max-width: 340px;
+
+    margin: 0 auto;
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.admin-auth-brand-footer {
+    position: absolute;
+    right: 30px;
+    bottom: 45px;
+    left: 30px;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+
+/* ==========================================
+   AUTHENTICATION MAIN AREA
+========================================== */
+
+.admin-auth-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
+
+    padding: 48px 40px;
+}
+
+.admin-auth-container {
+    width: 100%;
+    max-width: 420px;
+
+    margin: 0 auto;
+}
+
+.admin-login {
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* ==========================================
+   LOGIN HEADING
+========================================== */
+
+.admin-login-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 54px;
+    height: 54px;
+
+    margin-bottom: 26px;
+
+    background: rgba(198, 154, 72, 0.12);
+    border: 1px solid rgba(198, 154, 72, 0.20);
+    border-radius: 12px;
+
+    color: var(--auth-gold-light);
+}
+
+.admin-login-heading {
+    margin-bottom: 32px;
+}
+
+.admin-login-eyebrow {
+    margin: 0 0 10px;
+
+    color: var(--auth-gold-light);
+
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+
+.admin-login-heading h1 {
+    margin: 0 0 10px;
+
+    color: var(--auth-text);
+
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+}
+
+.admin-login-description {
+    margin: 0;
+
+    color: var(--auth-muted);
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* ==========================================
+   LOGIN FORM
+========================================== */
+
+.admin-login-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 22px;
+
+    width: 100%;
+}
+
+.admin-auth-field {
+    min-width: 0;
+}
+
+.admin-auth-field > label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #e2e8f0;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.admin-auth-input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+.admin-auth-input-icon {
+    position: absolute;
+
+    top: 50%;
+    left: 15px;
+
+    width: 19px;
+    height: 19px;
+
+    color: #94a3b8;
+
+    transform: translateY(-50%);
+
+    pointer-events: none;
+}
+
+.admin-auth-body .admin-auth-input {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+    height: 50px;
+
+    margin: 0;
+    padding: 12px 15px 12px 45px;
+
+    background: var(--auth-panel);
+    border: 1px solid var(--auth-border);
+    border-radius: 7px;
+
+    color: var(--auth-text);
+
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+
+    outline: none;
+    box-shadow: none;
+
+    transition:
+        border-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.admin-auth-body .admin-auth-input::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+.admin-auth-body .admin-auth-input:focus {
+    border-color: var(--auth-gold);
+
+    box-shadow:
+        0 0 0 3px rgba(198, 154, 72, 0.12);
+}
+
+.admin-auth-body .admin-auth-password {
+    padding-right: 72px;
+}
+
+
+/* ==========================================
+   PASSWORD VISIBILITY
+========================================== */
+
+.admin-password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 8px;
+
+    padding: 8px 10px;
+
+    background: transparent;
+    border: 0;
+    border-radius: 4px;
+
+    color: var(--auth-gold-light);
+
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transform: translateY(-50%);
+}
+
+.admin-password-toggle:hover {
+    background: rgba(198, 154, 72, 0.08);
+}
+
+
+/* ==========================================
+   REMEMBER ME AND FORGOT PASSWORD
+========================================== */
+
+.admin-auth-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    gap: 14px;
+}
+
+.admin-remember-label {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 9px;
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.admin-auth-body .admin-remember-label input {
+    width: 16px;
+    height: 16px;
+
+    margin: 0;
+
+    appearance: auto;
+    accent-color: var(--auth-gold);
+
+    cursor: pointer;
+}
+
+.admin-forgot-password {
+    color: var(--auth-gold-light);
+
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.admin-forgot-password:hover {
+    text-decoration: underline;
+}
+
+
+/* ==========================================
+   SIGN IN BUTTON
+========================================== */
+
+.admin-auth-body .admin-login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    width: 100%;
+    min-height: 50px;
+
+    padding: 13px 20px;
+
+    background: var(--auth-gold);
+    border: 1px solid var(--auth-gold);
+    border-radius: 7px;
+
+    color: #101820;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease;
+}
+
+.admin-auth-body .admin-login-button:hover {
+    background: var(--auth-gold-light);
+    border-color: var(--auth-gold-light);
+}
+
+.admin-auth-body .admin-login-button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.admin-login-loading {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.admin-auth-spinner {
+    width: 17px;
+    height: 17px;
+
+    border: 2px solid rgba(16, 24, 32, 0.25);
+    border-top-color: #101820;
+    border-radius: 50%;
+
+    animation: admin-auth-spin 700ms linear infinite;
+}
+
+@keyframes admin-auth-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ==========================================
+   VALIDATION AND STATUS MESSAGES
+========================================== */
+
+.admin-auth-body .admin-auth-input.has-error {
+    border-color: #ef4444;
+}
+
+.admin-auth-field-error {
+    margin: 8px 0 0;
+
+    color: #fca5a5;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.admin-auth-success {
+    margin-bottom: 24px;
+    padding: 14px 16px;
+
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 7px;
+
+    color: #6ee7b7;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* ==========================================
+   LOGIN FOOTER
+========================================== */
+
+.admin-login-footer {
+    margin-top: 30px;
+    padding-top: 25px;
+
+    border-top: 1px solid #263241;
+
+    text-align: center;
+}
+
+.admin-back-website {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.admin-back-website:hover {
+    color: var(--auth-gold-light);
+}
+
+.admin-login-footer p {
+    margin: 20px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+    letter-spacing: 0.3px;
+}
+
+
+/* ==========================================
+   KEYBOARD ACCESSIBILITY
+========================================== */
+
+.admin-auth-body a:focus-visible,
+.admin-auth-body button:focus-visible,
+.admin-auth-body input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--auth-gold-light);
+    outline-offset: 4px;
+}
+
+
+/* ==========================================
+   TABLET RESPONSIVE
+========================================== */
+
+@media (max-width: 1023px) {
+
+    .admin-auth-layout {
+        grid-template-columns: 40% minmax(0, 1fr);
+    }
+
+    .admin-auth-brand {
+        padding: 45px 25px;
+    }
+
+    .admin-auth-brand::before {
+        inset: 14px;
+    }
+
+    .admin-auth-brand-name {
+        font-size: 25px;
+        letter-spacing: 2px;
+    }
+
+    .admin-auth-main {
+        padding: 40px 30px;
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+
+@media (max-width: 767px) {
+
+    .admin-auth-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-auth-brand {
+        min-height: auto;
+
+        padding: 30px 20px;
+    }
+
+    .admin-auth-brand::before {
+        display: none;
+    }
+
+    .admin-auth-logo-link {
+        margin-bottom: 12px;
+    }
+
+    .admin-auth-logo {
+        width: 58px;
+        height: 58px;
+    }
+
+    .admin-auth-brand-name {
+        font-size: 23px;
+    }
+
+    .admin-auth-brand-subtitle {
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+    .admin-auth-brand-divider,
+    .admin-auth-brand h2,
+    .admin-auth-brand-description,
+    .admin-auth-brand-footer {
+        display: none;
+    }
+
+    .admin-auth-main {
+        padding: 36px 24px;
+    }
+
+    .admin-login-heading h1 {
+        font-size: 30px;
+    }
+
+    .admin-login-icon {
+        width: 46px;
+        height: 46px;
+
+        margin-bottom: 20px;
+    }
+
+    .admin-auth-body .admin-auth-input {
+        font-size: 16px;
+    }
+
+}
+
+@media (max-width: 380px) {
+
+    .admin-auth-main {
+        padding: 28px 18px;
+    }
+
+    .admin-auth-options {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .admin-auth-body *,
+    .admin-auth-body *::before,
+    .admin-auth-body *::after {
+        transition: none;
+        animation: none;
+    }
+
+}
+
+
+/* ==========================================
+   ADMIN PASSWORD RECOVERY
+   Stage 04.02
+========================================== */
+
+.admin-auth-help {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-top: 24px;
+    padding: 14px 16px;
+
+    background: rgba(148, 163, 184, 0.05);
+    border: 1px solid #2c3949;
+    border-radius: 7px;
+}
+
+.admin-auth-help svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+
+    margin-top: 2px;
+
+    color: var(--auth-gold-light);
+}
+
+.admin-auth-help p {
+    margin: 0;
+
+    color: var(--auth-muted);
+
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+
+/* ==========================================
+   PASSWORD GUIDANCE
+========================================== */
+
+.admin-password-hint {
+    margin: 8px 0 0;
+
+    color: var(--auth-muted);
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* ==========================================
+   RESET PASSWORD FORM
+========================================== */
+
+.admin-reset-password .admin-login-heading {
+    margin-bottom: 26px;
+}
+
+.admin-reset-password .admin-login-form {
+    gap: 18px;
+}
+
+.admin-reset-password .admin-login-footer {
+    margin-top: 24px;
+    padding-top: 20px;
+}
+
+.admin-reset-password .admin-login-icon {
+    margin-bottom: 20px;
+}
+
+
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+
+@media (max-width: 767px) {
+
+    .admin-auth-help {
+        padding: 12px;
+    }
+
+    .admin-auth-help p {
+        font-size: 12px;
+    }
+
+    .admin-reset-password .admin-login-form {
+        gap: 16px;
+    }
+
+    .admin-reset-password .admin-login-heading {
+        margin-bottom: 24px;
+    }
+
+}
+
+/* =========================================
+   ADMIN EMAIL VERIFICATION
+   Stage 04.02
+========================================= */
+
+.admin-verify-email {
+    width: 100%;
+    max-width: 420px;
+}
+
+.admin-verify-email [x-cloak] {
+    display: none !important;
+}
+
+/* Heading */
+
+.admin-verify-heading {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.admin-verify-eyebrow {
+    display: block;
+    color: #c69a48;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+
+.admin-verify-heading h1 {
+    color: #f1f5f9;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0 0 12px;
+}
+
+.admin-verify-heading p {
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* Email Address */
+
+.admin-verify-address {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    border: 1px solid #2c3949;
+    border-radius: 8px;
+    background: #151b24;
+}
+
+.admin-verify-address > svg {
+    flex-shrink: 0;
+    color: #c69a48;
+}
+
+.admin-verify-address > div {
+    min-width: 0;
+}
+
+.admin-verify-address span {
+    display: block;
+    font-size: 11px;
+    color: #94a3b8;
+    margin-bottom: 5px;
+}
+
+.admin-verify-address strong {
+    display: block;
+    color: #e2e8f0;
+    font-size: 13px;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+/* Status Messages */
+
+.admin-verify-alert {
+    padding: 13px 15px;
+    border: 1px solid;
+    border-radius: 7px;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.admin-verify-alert.is-success {
+    color: #6ee7b7;
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.25);
+}
+
+.admin-verify-alert.is-warning {
+    color: #fcd38d;
+    background: rgba(198, 154, 72, 0.08);
+    border-color: rgba(198, 154, 72, 0.3);
+}
+
+/* OTP Form */
+
+.admin-verify-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.admin-otp-field label {
+    display: block;
+    color: #e2e8f0;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.admin-otp-input {
+    display: block;
+    width: 100%;
+    height: 64px;
+    padding: 12px 16px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: #151b24;
+    color: #f1f5f9;
+    font-family: inherit;
+    font-size: 26px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.45em;
+    text-align: center;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-otp-input::placeholder {
+    color: #64748b;
+    opacity: 0.65;
+}
+
+.admin-otp-input:focus {
+    border-color: #c69a48;
+    box-shadow: 0 0 0 3px rgba(198, 154, 72, 0.12);
+}
+
+.admin-otp-input.is-invalid {
+    border-color: #f87171;
+}
+
+.admin-otp-hint {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.admin-otp-hint svg {
+    flex-shrink: 0;
+}
+
+.admin-otp-attempts {
+    margin: 6px 0 0;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.admin-verify-error {
+    color: #fca5a5;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 9px 0 0;
+}
+
+/* Verify Button */
+
+.admin-verify-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 50px;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 7px;
+    background: #c69a48;
+    color: #101318;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.admin-verify-submit:hover:not(:disabled) {
+    background: #e0b66a;
+}
+
+.admin-verify-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.admin-verify-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.admin-verify-spinner {
+    width: 17px;
+    height: 17px;
+    border: 2px solid rgba(16, 19, 24, 0.25);
+    border-top-color: #101318;
+    border-radius: 50%;
+    animation: admin-verify-spin 0.7s linear infinite;
+}
+
+@keyframes admin-verify-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Resend Verification Code */
+
+.admin-verify-resend {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.admin-verify-resend > p {
+    margin: 0 0 8px;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.admin-verify-link {
+    padding: 5px;
+    border: 0;
+    background: transparent;
+    color: #e0b66a;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.admin-verify-link:hover:not(:disabled) {
+    text-decoration: underline;
+}
+
+.admin-verify-link:disabled {
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Help Panel */
+
+.admin-verify-help {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 14px 15px;
+    margin-top: 24px;
+    border: 1px solid #2c3949;
+    border-radius: 7px;
+    background: rgba(148, 163, 184, 0.035);
+}
+
+.admin-verify-help svg {
+    flex-shrink: 0;
+    color: #c69a48;
+    margin-top: 2px;
+}
+
+.admin-verify-help p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* Footer */
+
+.admin-verify-footer {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid #2c3949;
+    text-align: center;
+}
+
+.admin-verify-signout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 0;
+    background: transparent;
+    color: #cbd5e1;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.admin-verify-signout:hover:not(:disabled) {
+    color: #e0b66a;
+}
+
+.admin-verify-signout:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.admin-verify-footer > span {
+    display: block;
+    margin-top: 14px;
+    color: #94a3b8;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+/* Keyboard Accessibility */
+
+.admin-verify-email button:focus-visible {
+    outline: 2px solid #e0b66a;
+    outline-offset: 4px;
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 767px) {
+
+    .admin-verify-heading {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .admin-verify-heading h1 {
+        font-size: 27px;
+    }
+
+    .admin-otp-input {
+        height: 58px;
+        font-size: 24px;
+        letter-spacing: 0.35em;
+    }
+
+    .admin-verify-address {
+        padding: 12px;
+    }
+
+    .admin-verify-footer {
+        margin-top: 22px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .admin-otp-input {
+        font-size: 22px;
+        letter-spacing: 0.25em;
+    }
+
+    .admin-verify-heading h1 {
+        font-size: 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .admin-verify-email * {
+        transition: none !important;
+    }
+
+    .admin-verify-spinner {
+        animation: none;
+    }
+}
+

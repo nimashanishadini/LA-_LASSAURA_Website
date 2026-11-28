@@ -1,0 +1,603 @@
+/* =========================================
+   ADMIN VILLA RESERVATION TIMELINE
+========================================= */
+
+.admin-calendar-page {
+    width: 100%;
+    min-width: 0;
+}
+
+.admin-calendar-page > section,
+.admin-calendar-page > div {
+    min-width: 0;
+    max-width: 100%;
+}
+
+#villa-timeline {
+    --timeline-villa-width: 180px;
+    --timeline-day-width: 100px;
+
+    min-width: 0;
+    margin-bottom: 24px;
+}
+
+#villa-timeline [hidden] {
+    display: none !important;
+}
+
+/* Calendar layout switch */
+
+.calendar-layout-switch {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #334155;
+}
+
+.admin-calendar-card [x-cloak] {
+    display: none !important;
+}
+
+/* Timeline toolbar */
+
+.timeline-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.timeline-navigation,
+.timeline-view-switch {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.timeline-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+    padding: 9px 14px;
+
+    background: #253041;
+    border: 1px solid #475569;
+    border-radius: 7px;
+
+    color: #e2e8f0;
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: background .15s ease;
+}
+
+.timeline-button:hover {
+    background: #334155;
+}
+
+.timeline-button.is-active {
+    background: #c69a48;
+    border-color: #c69a48;
+    color: #101c2a;
+}
+
+.timeline-button:focus-visible,
+.timeline-booking:focus-visible,
+.timeline-cell:focus-visible,
+.timeline-scroll:focus-visible {
+    outline: 2px solid #e0b66a;
+    outline-offset: -2px;
+}
+
+.timeline-title {
+    margin: 0 8px;
+
+    color: #f1f5f9;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+/* Timeline scroll container */
+
+.timeline-scroll {
+    width: 100%;
+    min-width: 0;
+
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+
+    border: 1px solid #334155;
+    border-radius: 10px;
+
+    scrollbar-width: thin;
+    scrollbar-color: #475569 #111822;
+}
+
+.timeline-grid {
+    min-width: calc(
+        var(--timeline-villa-width) +
+        var(--timeline-days, 7) *
+        var(--timeline-day-width)
+    );
+
+    background: #111822;
+}
+
+/* Timeline header */
+
+.timeline-header {
+    display: grid;
+
+    grid-template-columns:
+        var(--timeline-villa-width)
+        repeat(
+            var(--timeline-days, 7),
+            minmax(0, 1fr)
+        );
+
+    background: #1b2532;
+    border-bottom: 1px solid #334155;
+}
+
+.timeline-villa-heading {
+    display: flex;
+    align-items: center;
+
+    position: sticky;
+    left: 0;
+    z-index: 11;
+
+    padding: 18px;
+
+    background: #1b2532;
+    border-right: 1px solid #334155;
+
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.timeline-date-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+    min-height: 68px;
+    padding: 10px 5px;
+
+    border-right: 1px solid #334155;
+}
+
+.timeline-date-heading:last-child {
+    border-right: 0;
+}
+
+.timeline-weekday {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.timeline-day-number {
+    color: #e2e8f0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Current date */
+
+.timeline-date-heading.is-today {
+    background: #c69a4815;
+}
+
+.timeline-date-heading.is-today
+.timeline-day-number {
+    color: #e0b66a;
+}
+
+/* Villa rows */
+
+.timeline-room-row {
+    display: grid;
+
+    grid-template-columns:
+        var(--timeline-villa-width)
+        minmax(0, 1fr);
+
+    min-height: 78px;
+    border-bottom: 1px solid #334155;
+}
+
+.timeline-room-row:last-child {
+    border-bottom: 0;
+}
+
+.timeline-room-name {
+    display: flex;
+    align-items: center;
+
+    position: sticky;
+    left: 0;
+    z-index: 10;
+
+    padding: 16px;
+
+    background: #111822;
+    border-right: 1px solid #334155;
+
+    color: #e2e8f0;
+    font-size: 14px;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+}
+
+/* Timeline track */
+
+.timeline-track {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            var(--timeline-days, 7),
+            minmax(0, 1fr)
+        );
+
+    position: relative;
+
+    min-width: 0;
+    min-height: 78px;
+    padding: 0;
+
+    isolation: isolate;
+}
+
+.timeline-cell {
+    align-self: stretch;
+
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    padding: 0;
+
+    background: transparent;
+    border: 0;
+    border-right: 1px solid #334155;
+    border-radius: 0;
+
+    cursor: pointer;
+    z-index: 0;
+}
+
+.timeline-cell:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+.timeline-cell:not(:disabled):hover {
+    background: #c69a4810;
+}
+
+.timeline-cell.is-today {
+    background: #c69a480d;
+}
+
+/* =========================================
+   BOOKING EVENT CARDS
+========================================= */
+
+.timeline-booking {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+
+    gap: 4px;
+
+    position: relative;
+    z-index: 2;
+
+    min-width: 0;
+    min-height: 48px;
+
+    margin: 5px 4px;
+    padding: 8px 11px;
+
+    border: 1px solid;
+    border-radius: 7px;
+
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.timeline-booking-title,
+.timeline-booking-subtitle {
+    display: block;
+    max-width: 100%;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.timeline-booking-title {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.timeline-booking-subtitle {
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Confirmed booking - Green */
+
+.timeline-booking.confirmed {
+    background: #194d3b;
+    border-color: #398767;
+    color: #bbf7d0;
+}
+
+/* Pending booking - Gold */
+
+.timeline-booking.pending {
+    background: #503d20;
+    border-color: #b58b43;
+    color: #fde68a;
+}
+
+/* Checked-in booking - Blue */
+
+.timeline-booking.checked-in {
+    background: #203e61;
+    border-color: #527fae;
+    color: #bfdbfe;
+}
+
+/* Maintenance - Grey */
+
+.timeline-booking.maintenance {
+    background: #374151;
+    border-color: #64748b;
+    color: #e2e8f0;
+}
+
+/* Unknown event */
+
+.timeline-booking.unknown {
+    background: #253041;
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+.timeline-booking:hover {
+    filter: brightness(1.12);
+}
+
+/* =========================================
+   LOADING AND ERROR STATES
+========================================= */
+
+.timeline-loading,
+.timeline-empty {
+    padding: 28px 16px;
+
+    color: #94a3b8;
+    font-size: 13px;
+    text-align: center;
+}
+
+.timeline-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+    min-height: 160px;
+}
+
+.timeline-spinner {
+    display: inline-block;
+
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+
+    border: 2px solid #475569;
+    border-top-color: #c69a48;
+    border-radius: 50%;
+
+    animation: timeline-spin .8s linear infinite;
+}
+
+@keyframes timeline-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.timeline-error {
+    padding: 14px;
+    margin-bottom: 12px;
+
+    background: #ef444410;
+    border: 1px solid #ef444450;
+    border-radius: 8px;
+
+    color: #fca5a5;
+    font-size: 13px;
+}
+
+#timeline-retry {
+    margin-bottom: 16px;
+}
+
+/* Mobile scroll hint */
+
+.timeline-mobile-hint {
+    display: none;
+}
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 1024px) {
+
+    #villa-timeline {
+        --timeline-villa-width: 150px;
+        --timeline-day-width: 90px;
+    }
+
+    .timeline-toolbar {
+        gap: 14px;
+    }
+
+    .timeline-title {
+        font-size: 15px;
+    }
+}
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 640px) {
+
+    #villa-timeline {
+        --timeline-villa-width: 85px;
+        --timeline-day-width: 64px;
+
+        margin-bottom: 16px;
+    }
+
+    .calendar-layout-switch {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        gap: 8px;
+        margin-bottom: 18px;
+        padding-bottom: 16px;
+    }
+
+    .calendar-layout-switch .timeline-button {
+        width: 100%;
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .timeline-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .timeline-navigation {
+        width: 100%;
+        gap: 6px;
+    }
+
+    .timeline-title {
+        margin: 0 4px;
+        font-size: 14px;
+    }
+
+    .timeline-button {
+        min-height: 44px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .timeline-view-switch {
+        width: 100%;
+    }
+
+    .timeline-view-switch .timeline-button {
+        flex: 1;
+    }
+
+    .timeline-villa-heading {
+        padding: 10px;
+        font-size: 11px;
+    }
+
+    .timeline-room-name {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .timeline-date-heading {
+        min-height: 58px;
+        padding: 8px 4px;
+    }
+
+    .timeline-weekday {
+        font-size: 11px;
+    }
+
+    .timeline-day-number {
+        font-size: 14px;
+    }
+
+    .timeline-room-row,
+    .timeline-track {
+        min-height: 70px;
+    }
+
+    .timeline-booking {
+        min-height: 44px;
+        padding: 7px;
+        margin: 4px 3px;
+    }
+
+    .timeline-booking-title {
+        font-size: 11px;
+    }
+
+    .timeline-booking-subtitle {
+        font-size: 10px;
+    }
+
+    .timeline-mobile-hint {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+        margin-top: 12px;
+
+        color: #94a3b8;
+        font-size: 11px;
+    }
+
+    .timeline-mobile-hint svg {
+        flex-shrink: 0;
+    }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .timeline-button {
+        transition: none;
+    }
+
+    .timeline-spinner {
+        animation: none;
+    }
+}

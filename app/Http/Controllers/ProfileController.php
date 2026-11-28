@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Booking;
+use App\Models\EmailOtp;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        $wasEmail = $request->user()->email;
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
@@ -34,6 +36,10 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+        if ($wasEmail !== $request->user()->email) {
+            EmailOtp::where('user_id', $request->user()->id)->delete();
+            $request->user()->sendEmailVerificationNotification();
+        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

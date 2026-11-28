@@ -1,0 +1,505 @@
+
+/* =========================================
+   LA LASSAURA - CUSTOMER ACCOUNT MODAL
+   ========================================= */
+
+.account-dialog.account-reference {
+    --account-navy: #10263d;
+    --account-gold: #c69a48;
+    --account-dark-gold: #805d27;
+    --account-ivory: #f8f5ef;
+    --account-border: #d5cec0;
+    --account-muted: #65717c;
+
+    position: fixed;
+    inset: 0;
+    width: calc(100% - 32px);
+    max-width: 540px;
+    max-height: 90vh;
+    max-height: 90dvh;
+    height: fit-content;
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--account-border);
+    border-radius: 4px;
+    background: var(--account-ivory);
+    color: var(--account-navy);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+    font-family: "DM Sans", Arial, sans-serif;
+}
+
+.account-reference *,
+.account-reference *::before,
+.account-reference *::after {
+    box-sizing: border-box;
+}
+
+.account-reference::backdrop {
+    background: rgba(10, 25, 40, 0.65);
+    backdrop-filter: blur(2px);
+}
+
+/* Header */
+
+.account-reference .account-heading {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 76px;
+    padding: 20px 52px;
+    background: var(--account-ivory);
+    border-bottom: 1px solid var(--account-border);
+}
+
+.account-reference .account-heading h2 {
+    margin: 0;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--account-navy);
+    text-align: center;
+}
+
+.account-reference .account-close {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--account-navy);
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* Security Notice */
+
+.account-reference .account-security {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 24px;
+    background: #eeeee5;
+    color: var(--account-muted);
+    font-size: 12px;
+}
+
+.account-reference .account-info {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 19px;
+    height: 19px;
+    border: 1px solid var(--account-dark-gold);
+    border-radius: 50%;
+    color: var(--account-dark-gold);
+    font-size: 12px;
+}
+
+.account-reference .account-security button {
+    margin-left: auto;
+    padding: 4px;
+    border: 0;
+    background: transparent;
+    color: var(--account-muted);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Main Content */
+
+.account-reference .account-main {
+    padding: 26px 30px 20px;
+    background: var(--account-ivory);
+}
+
+.account-reference .account-main label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--account-navy);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Inputs */
+
+.account-reference .account-main input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: 46px;
+    margin: 0;
+    padding: 10px 13px;
+    border: 1px solid var(--account-border);
+    border-radius: 3px;
+    background: #fff;
+    color: var(--account-navy);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.account-reference .account-main input:focus {
+    border-color: var(--account-gold);
+    box-shadow: 0 0 0 3px rgba(198, 154, 72, 0.15);
+}
+
+.account-reference .account-main input::placeholder {
+    color: #858b90;
+}
+
+.account-reference .account-main input[readonly] {
+    background: #eeeee5;
+}
+
+.account-reference .account-email-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.account-reference .account-email-row input:only-child {
+    grid-column: 1 / -1;
+}
+
+.account-reference .account-field {
+    margin-top: 18px;
+}
+
+/* OTP Inputs */
+
+.account-reference #account-login-code,
+.account-reference #account-email-code {
+    text-align: center;
+    letter-spacing: 0.35em;
+    font-size: 20px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Gold Buttons */
+
+.account-reference .account-gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 20px;
+    border: 1px solid var(--account-gold);
+    border-radius: 3px;
+    background: var(--account-gold);
+    color: var(--account-navy);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.account-reference .account-gold:hover:not(:disabled) {
+    background: var(--account-dark-gold);
+    border-color: var(--account-dark-gold);
+    color: #fff;
+}
+
+.account-reference .account-send {
+    min-width: 88px;
+    height: 46px;
+    padding: 10px 16px;
+}
+
+.account-reference .account-primary {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 18px;
+}
+
+.account-reference button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* Help Links */
+
+.account-reference .account-help-links {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.account-reference .account-help-links button,
+.account-reference .account-help-links a {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--account-dark-gold);
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 1.5;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+/* Secondary Actions */
+
+.account-reference .account-secondary-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.account-reference .account-secondary-actions button {
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--account-navy);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--account-navy);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.account-reference .account-secondary-actions button:hover {
+    background: var(--account-navy);
+    color: #fff;
+}
+
+/* Registration */
+
+.account-reference .account-register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.account-reference .account-register-form label {
+    margin: 0;
+}
+
+.account-reference .account-register-form input {
+    margin-top: 8px;
+}
+
+.account-reference .account-register-form .account-primary {
+    margin-top: 4px;
+}
+
+.account-reference .account-intro {
+    margin: 0 0 18px;
+    color: var(--account-muted);
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.account-reference .account-back {
+    display: block;
+    width: 100%;
+    margin-top: 18px;
+    padding: 5px;
+    border: 0;
+    background: transparent;
+    color: var(--account-dark-gold);
+    text-align: center;
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Feedback Messages */
+
+.account-reference .account-alert {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border: 1px solid #c9d9c7;
+    border-radius: 3px;
+    background: #edf4eb;
+    color: #315a36;
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.account-reference .account-alert.account-error {
+    border-color: #e8bcbc;
+    background: #fff1f1;
+    color: #a32020;
+}
+
+.account-reference .account-delivery-error {
+    margin: 12px 0;
+    color: #a32020;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* My Account */
+
+.account-reference .account-success {
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.account-reference .account-welcome {
+    margin-bottom: 10px;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 28px;
+    color: var(--account-navy);
+}
+
+.account-reference .account-signout {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.account-reference .account-signout button {
+    padding: 8px;
+    border: 0;
+    background: transparent;
+    color: var(--account-dark-gold);
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Compact Branding Footer */
+
+.account-reference .account-decoration {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    min-height: 34px;
+    padding: 10px 20px;
+    background: var(--account-ivory);
+}
+
+.account-reference .account-decoration svg {
+    display: none;
+}
+
+.account-reference .account-decoration span {
+    position: static;
+    transform: none;
+    color: var(--account-muted);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-align: center;
+}
+
+.account-reference .account-reservations {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--account-border);
+    color: var(--account-dark-gold);
+    background: #eeeee5;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.account-reference .account-reservations:hover {
+    text-decoration: underline;
+}
+
+/* Keyboard Accessibility */
+
+.account-reference button:focus-visible,
+.account-reference a:focus-visible {
+    outline: 2px solid var(--account-dark-gold);
+    outline-offset: 3px;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .account-dialog.account-reference {
+        width: calc(100% - 24px);
+        max-height: 94vh;
+        max-height: 94dvh;
+    }
+
+    .account-reference .account-heading {
+        min-height: 66px;
+        padding: 18px 44px;
+    }
+
+    .account-reference .account-heading h2 {
+        font-size: 30px;
+    }
+
+    .account-reference .account-main {
+        padding: 22px 20px 18px;
+    }
+
+    .account-reference .account-security {
+        padding: 10px 18px;
+    }
+
+    .account-reference .account-main input {
+        font-size: 16px;
+    }
+
+    .account-reference .account-send {
+        min-width: 74px;
+        padding: 10px 12px;
+    }
+
+    .account-reference .account-help-links {
+        gap: 8px;
+    }
+
+    .account-reference .account-secondary-actions {
+        gap: 8px;
+    }
+
+    .account-reference .account-secondary-actions button {
+        font-size: 12px;
+        padding: 10px 8px;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .account-reference .account-main {
+        padding: 18px 14px;
+    }
+
+    .account-reference .account-secondary-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .account-reference * {
+        transition: none !important;
+        animation: none !important;
+    }
+}

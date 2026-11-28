@@ -61,6 +61,7 @@ html {
     }
 }
 
+
 @layer components {
     .heading-hero {
         @apply font-heading font-medium
@@ -176,3 +177,171 @@ html {
  .booking-design .booking-actions { gap: 12px; }
  .booking-design .bg-gold { gap: 10px; padding-inline: 18px; }
 }
+
+
+/* Account popup: reference layout in La Lassaura's palette. */
+.account-reference {
+    position: fixed; inset: 0; margin: auto; border: 0; padding: 0;
+    width: calc(100% - 2rem); max-width: 680px; max-height: 92dvh;
+    overflow-y: auto; background: #fff; color: #172d40;
+    box-shadow: 0 24px 100px #07172640;
+}
+.account-reference::backdrop { background: #06111e80; }
+.account-heading { position: relative; background: #f6f5f2; padding: 22px 60px; text-align: center; }
+.account-heading h2 { font-family: var(--font-heading); font-size: 42px; font-weight: 400; line-height: 1.2; }
+.account-close { position: absolute; right: 20px; top: 14px; width: 44px; height: 44px; font-size: 42px; font-weight: 300; line-height: 1; }
+.account-security { display: flex; align-items: center; gap: 14px; background: #eeece5; padding: 12px 18px; color: #797970; font-size: 18px; }
+.account-info { border: 2px solid #bd9344; color: #bd9344; border-radius: 50%; width: 23px; height: 23px; font-size: 15px; line-height: 19px; text-align: center; font-weight: 600; }
+.account-security button { margin-left: auto; font-size: 29px; line-height: 1; }
+.account-main { position: relative; z-index: 1; padding: 38px 44px 12px; }
+.account-main label { display: block; font-size: 18px; font-weight: 600; }
+.account-reference input { display: block; width: 100%; min-width: 0; height: 56px; margin-top: 14px; border: 1px solid #c8c8c5; background: #fff; padding: 12px 14px; color: #172d40; font-size: 17px; font-weight: 400; }
+.account-reference input:focus { outline: 2px solid #bc9447; outline-offset: 2px; }
+.account-email-row { display: flex; align-items: end; gap: 26px; }
+.account-email-row input { flex: 1; }
+.account-gold { background: #c69b43; color: #10283f; font-size: 20px; font-weight: 600; text-align: center; border: 0; min-height: 56px; padding: 12px 20px; }
+.account-gold:hover { background: #b18a3c; }
+.account-send { min-width: 128px; }
+.account-field { margin-top: 28px; }
+.account-help-links { display: flex; justify-content: space-between; gap: 25px; margin-top: 22px; font-size: 16px; line-height: 1.5; }
+.account-help-links button, .account-help-links a, .account-back, .account-signout button { text-decoration: underline; text-underline-offset: 5px; }
+.account-help-links button { text-align: left; }
+.account-help-links button:last-child { text-align: right; max-width: 225px; }
+.account-primary { display: block; width: 100%; margin-top: 32px; }
+.account-secondary-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; }
+.account-secondary-actions button { min-height: 52px; padding: 10px; border: 1px solid #172d40; font-size: 18px; font-weight: 600; background: #ffffffc0; }
+.account-secondary-actions button:hover { background: #f4f1e8; }
+.account-alert { margin-bottom: 20px; padding: 12px; background: #f1eee5; color: #42566e; font-size: 14px; line-height: 1.6; }
+.account-error { background: #fef2f2; color: #991b1b; }
+.account-intro { margin-bottom: 22px; color: #42566e; font-size: 14px; line-height: 1.7; }
+.account-register-form { display: grid; gap: 20px; }
+.account-register-form .account-primary { margin-top: 6px; }
+.account-back { display: block; margin-top: 22px; font-size: 14px; }
+.account-success { text-align: center; overflow-wrap: anywhere; }
+.account-welcome { font-family: var(--font-heading); font-size: 30px; margin-bottom: 12px; }
+.account-signout { margin-top: 24px; text-align: center; font-size: 14px; }
+.account-decoration { position: relative; height: 95px; overflow: hidden; display: flex; align-items: end; justify-content: center; padding-bottom: 20px; color: #9eaf81; }
+.account-decoration svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .38; }
+.account-decoration span { position: relative; font-size: 10px; letter-spacing: .22em; color: #657057; }
+.account-reservations { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: #f3f3f1; padding: 16px 20px; font-size: 17px; }
+.account-reservations span { font-size: 30px; line-height: 1; }
+.account-reference button { cursor: pointer; }
+.account-reference button:disabled { opacity: .5; cursor: default; }
+@media (max-width: 600px) {
+    .account-heading { padding: 20px 48px; }
+    .account-heading h2 { font-size: 34px; }
+    .account-close { right: 8px; top: 13px; font-size: 34px; }
+    .account-security { font-size: 14px; gap: 10px; }
+    .account-main { padding: 26px 22px 10px; }
+    .account-main label { font-size: 16px; }
+    .account-reference input { height: 50px; margin-top: 10px; font-size: 16px; }
+    .account-email-row { gap: 12px; }
+    .account-gold { min-height: 50px; font-size: 17px; padding: 10px 14px; }
+    .account-send { min-width: 82px; }
+    .account-help-links { font-size: 12px; gap: 12px; }
+    .account-secondary-actions { gap: 12px; margin-top: 22px; }
+    .account-secondary-actions button { font-size: 14px; }
+    .account-primary { margin-top: 26px; }
+    .account-reservations { font-size: 13px; padding: 14px 18px; }
+    .account-decoration { height: 75px; }
+}
+.account-delivery-error { margin-top: 18px; color: #991b1b; font-size: 13px; line-height: 1.5; }
+
+/* =========================================
+   CUSTOMER GOOGLE AUTHENTICATION
+========================================= */
+
+.account-social-login {
+    margin-top: 24px;
+    width: 100%;
+}
+
+.account-social-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.account-social-divider::before,
+.account-social-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: #d5cec0;
+}
+
+.account-social-divider span {
+    font-size: 12px;
+    font-weight: 400;
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.account-reference .account-google-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 20px;
+
+    background-color: #ffffff;
+    border: 1px solid #d5cec0;
+    border-radius: 4px;
+
+    color: #10263d;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.account-reference .account-google-button svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.account-reference .account-google-button:hover {
+    background-color: #faf9f6;
+    border-color: #c69a48;
+    color: #10263d;
+    box-shadow: 0 2px 8px rgba(16, 38, 61, 0.06);
+}
+
+.account-reference .account-google-button:focus-visible {
+    outline: 2px solid #c69a48;
+    outline-offset: 3px;
+}
+
+.account-reference .account-google-button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+@media (max-width: 480px) {
+    .account-social-login {
+        margin-top: 20px;
+    }
+
+    .account-reference .account-google-button {
+        min-height: 46px;
+        font-size: 13px;
+    }
+
+    .account-social-divider {
+        gap: 10px;
+    }
+}
+

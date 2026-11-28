@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Services\EmailVerification;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -39,6 +40,11 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    public function sendEmailVerificationNotification(): void
+    {
+        app(EmailVerification::class)->send($this);
+    }
+
     public function canAccessAdmin(): bool
     {
         return in_array($this->role, ['owner', 'manager', 'reception', 'finance', 'housekeeping', 'editor'], true);

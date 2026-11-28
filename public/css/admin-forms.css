@@ -1,0 +1,1301 @@
+/* =========================================
+   LA LASSAURA ADMIN FORM COMPONENTS
+   Stage 04.02
+========================================= */
+
+/* Form layout */
+
+.admin-shell-body .admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.admin-shell-body .admin-form-full {
+    grid-column: 1 / -1;
+}
+
+.admin-shell-body .admin-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+/* Labels */
+
+.admin-shell-body .admin-form-label {
+    color: #e2e8f0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.admin-shell-body .admin-required {
+    color: #fca5a5;
+    margin-left: 3px;
+}
+
+/* Input controls */
+
+.admin-shell-body .admin-form-control {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 11px 14px;
+
+    background: #0e151f;
+    border: 1px solid #475569;
+    border-radius: 8px;
+
+    color: #f1f5f9;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    color-scheme: dark;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-shell-body .admin-form-control::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+}
+
+.admin-shell-body .admin-form-control:hover {
+    border-color: #64748b;
+}
+
+.admin-shell-body .admin-form-control:focus {
+    border-color: #c69a48;
+    outline: 2px solid #c69a48;
+    outline-offset: 2px;
+}
+
+.admin-shell-body .admin-form-control:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.admin-shell-body .admin-form-control[readonly] {
+    background: #1e293b;
+}
+
+/* Select */
+
+.admin-shell-body .admin-form-select {
+    cursor: pointer;
+}
+
+.admin-shell-body .admin-form-select option {
+    background: #151b24;
+    color: #f1f5f9;
+}
+
+/* Textarea */
+
+.admin-shell-body .admin-form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* File inputs */
+
+.admin-shell-body .admin-form-control[type="file"] {
+    max-width: 100%;
+    padding: 8px;
+}
+
+.admin-shell-body
+.admin-form-control[type="file"]::file-selector-button {
+    background: #334155;
+    border: 0;
+    border-radius: 5px;
+    color: #f1f5f9;
+    padding: 8px 12px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Help and validation */
+
+.admin-shell-body .admin-form-help {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.admin-shell-body .admin-form-invalid {
+    border-color: #f87171;
+}
+
+.admin-shell-body .admin-form-invalid:focus {
+    border-color: #f87171;
+    outline-color: #f87171;
+}
+
+.admin-shell-body .admin-field-error {
+    color: #fca5a5;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.admin-shell-body .admin-field-error p {
+    margin: 0;
+}
+
+/* Checkbox */
+
+.admin-shell-body .admin-form-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    color: #e2e8f0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.admin-shell-body .admin-form-checkbox {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: #c69a48;
+    cursor: pointer;
+}
+
+.admin-shell-body .admin-form-checkbox:focus-visible {
+    outline: 2px solid #c69a48;
+    outline-offset: 3px;
+}
+
+/* Buttons */
+
+.admin-shell-body .admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 44px;
+    padding: 11px 20px;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.admin-shell-body .admin-btn-primary {
+    background: #c69a48;
+    border-color: #c69a48;
+    color: #101c2a;
+}
+
+.admin-shell-body .admin-btn-primary:hover {
+    background: #e0b66a;
+    border-color: #e0b66a;
+}
+
+.admin-shell-body .admin-btn-secondary {
+    background: transparent;
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+.admin-shell-body .admin-btn-secondary:hover {
+    background: #1e293b;
+    border-color: #64748b;
+}
+
+.admin-shell-body .admin-btn-danger {
+    background: #7f1d1d;
+    border-color: #991b1b;
+    color: #fecaca;
+}
+
+.admin-shell-body .admin-btn-danger:hover {
+    background: #991b1b;
+}
+
+.admin-shell-body .admin-btn:focus-visible {
+    outline: 2px solid #e0b66a;
+    outline-offset: 3px;
+}
+
+.admin-shell-body .admin-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Form section */
+
+.admin-shell-body .admin-form-section {
+    min-width: 0;
+    padding: 24px;
+    background: #151b24;
+    border: 1px solid #334155;
+    border-radius: 12px;
+}
+
+.admin-shell-body .admin-form-section-heading {
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #334155;
+}
+
+.admin-shell-body .admin-form-section-title {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-form-section-description {
+    margin: 7px 0 0;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.admin-shell-body .admin-form-section-content {
+    min-width: 0;
+}
+
+.admin-shell-body .admin-form-section-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #334155;
+}
+
+/* Responsive */
+
+@media (max-width: 640px) {
+
+    .admin-shell-body .admin-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .admin-shell-body .admin-form-section {
+        padding: 16px;
+    }
+
+    .admin-shell-body .admin-form-control {
+        font-size: 16px;
+    }
+
+    .admin-shell-body .admin-form-section-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-shell-body .admin-form-section-footer .admin-btn {
+        width: 100%;
+    }
+}
+
+/* Reduced motion accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .admin-shell-body .admin-form-control,
+    .admin-shell-body .admin-btn {
+        transition: none;
+    }
+}
+/* =========================================
+   ADMIN ROOM FORM
+   Stage 04.02
+========================================= */
+
+.admin-shell-body .admin-room-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #94a3b8;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.admin-shell-body .admin-room-back:hover {
+    color: #e0b66a;
+}
+
+.admin-shell-body .admin-room-back:focus-visible {
+    outline: 2px solid #c69a48;
+    outline-offset: 5px;
+    border-radius: 3px;
+}
+
+/* Form groups */
+
+.admin-shell-body .admin-room-form-group {
+    min-width: 0;
+    margin-top: 28px;
+    padding-top: 24px;
+    border: 0;
+    border-top: 1px solid #334155;
+}
+
+.admin-shell-body .admin-room-group-title {
+    margin: 0 0 7px;
+    color: #f1f5f9;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-room-group-description {
+    margin: 0 0 20px;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Guest capacity */
+
+.admin-shell-body .admin-room-capacity-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* Amenities */
+
+.admin-shell-body .admin-room-amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.admin-shell-body .admin-room-amenity-item {
+    min-width: 0;
+    padding: 4px 12px;
+    background: #0e151f;
+    border: 1px solid #334155;
+    border-radius: 8px;
+}
+
+.admin-shell-body .admin-room-amenity-item
+.admin-form-checkbox-label {
+    width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.admin-shell-body .admin-room-amenity-item:focus-within {
+    border-color: #c69a48;
+}
+
+/* Image upload */
+
+.admin-shell-body .admin-room-upload-info {
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    background: #0e151f;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.admin-shell-body .admin-room-upload-info p {
+    margin: 0;
+}
+
+.admin-shell-body .admin-room-upload-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+/* Photo cards */
+
+.admin-shell-body .admin-room-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.admin-shell-body .admin-room-photo-card {
+    min-width: 0;
+    overflow: hidden;
+    background: #0e151f;
+    border: 1px solid #334155;
+    border-radius: 12px;
+}
+
+.admin-shell-body .admin-room-photo-preview {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #1e293b;
+}
+
+.admin-shell-body .admin-room-photo-preview img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-shell-body .admin-room-cover-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 6px 10px;
+    background: #c69a48;
+    border-radius: 5px;
+    color: #101c2a;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-room-photo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px;
+}
+
+.admin-shell-body .admin-room-photo-delete {
+    padding: 0 18px 18px;
+}
+
+/* Empty photo state */
+
+.admin-shell-body .admin-room-photo-empty {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 200px;
+    padding: 24px;
+    text-align: center;
+    border: 1px dashed #475569;
+    border-radius: 12px;
+    color: #94a3b8;
+}
+
+.admin-shell-body .admin-room-photo-empty svg {
+    color: #c69a48;
+}
+
+.admin-shell-body .admin-room-photo-empty h3 {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-room-photo-empty p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* Loading spinner */
+
+.admin-shell-body .admin-form-spinner {
+    flex-shrink: 0;
+    animation: admin-form-spin 0.8s linear infinite;
+}
+
+@keyframes admin-form-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Tablet */
+
+@media (max-width: 1200px) {
+
+    .admin-shell-body .admin-room-photo-grid,
+    .admin-shell-body .admin-room-amenities-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 640px) {
+
+    .admin-shell-body .admin-room-capacity-grid,
+    .admin-shell-body .admin-room-amenities-grid,
+    .admin-shell-body .admin-room-photo-grid,
+    .admin-shell-body .admin-room-upload-form {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .admin-shell-body .admin-room-upload-form .admin-btn {
+        width: 100%;
+    }
+
+    .admin-shell-body .admin-room-form-group {
+        margin-top: 24px;
+        padding-top: 20px;
+    }
+
+    .admin-shell-body .admin-room-photo-form {
+        padding: 14px;
+    }
+
+    .admin-shell-body .admin-room-photo-delete {
+        padding: 0 14px 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .admin-shell-body .admin-form-spinner {
+        animation: none;
+    }
+
+    .admin-shell-body .admin-room-back {
+        transition: none;
+    }
+}
+
+/* =========================================
+   ADMIN RATE FORM
+   Stage 04.02
+========================================= */
+
+.admin-shell-body .admin-rate-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.admin-shell-body .admin-rate-form-grid
+.admin-form-field {
+    min-width: 0;
+}
+
+.admin-shell-body .admin-rate-form-grid
+.admin-form-control[type="date"] {
+    min-width: 0;
+    color-scheme: dark;
+}
+
+.admin-shell-body .admin-rate-form-grid
+input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+/* Tablet */
+
+@media (max-width: 1200px) {
+
+    .admin-shell-body .admin-rate-form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 640px) {
+
+    .admin-shell-body .admin-rate-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+}
+/* =========================================
+   ADMIN MANAGEMENT COMPONENTS
+   Stage 04.02
+========================================= */
+
+.admin-shell-body .admin-management-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.admin-shell-body .admin-management-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #334155;
+}
+
+.admin-shell-body .admin-management-heading {
+    margin-bottom: 20px;
+}
+
+.admin-shell-body .admin-management-heading h2 {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-management-heading p {
+    margin: 6px 0 0;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.admin-shell-body .admin-management-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Exchange rate summary */
+
+.admin-shell-body .admin-fx-summary {
+    padding: 24px;
+    background: #0e151f;
+    border: 1px solid #334155;
+    border-radius: 10px;
+}
+
+.admin-shell-body .admin-fx-label {
+    color: #94a3b8;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.admin-shell-body .admin-fx-value {
+    margin-top: 12px;
+    color: #f1f5f9;
+    font-size: 26px;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.admin-shell-body .admin-fx-value strong {
+    color: #e0b66a;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-fx-meta {
+    margin: 10px 0 0;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Feedback messages */
+
+.admin-shell-body .admin-feedback {
+    padding: 14px 16px;
+    margin-top: 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.admin-shell-body .admin-feedback-info {
+    background: #152536;
+    border-color: #30465d;
+    color: #cbd5e1;
+}
+
+.admin-shell-body .admin-feedback-warning {
+    background: #302719;
+    border-color: #70552b;
+    color: #fcd34d;
+}
+
+.admin-shell-body .admin-feedback-success {
+    background: #142e25;
+    border-color: #276749;
+    color: #86efac;
+}
+
+.admin-shell-body .admin-feedback-error {
+    background: #351e24;
+    border-color: #7f343d;
+    color: #fca5a5;
+}
+
+/* Expandable management cards */
+
+.admin-shell-body .admin-management-card {
+    min-width: 0;
+    background: #151b24;
+    border: 1px solid #334155;
+    border-radius: 12px;
+}
+
+.admin-shell-body .admin-management-card[open] {
+    border-color: #64748b;
+}
+
+.admin-shell-body .admin-rate-summary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.admin-shell-body
+.admin-rate-summary::-webkit-details-marker {
+    display: none;
+}
+
+.admin-shell-body .admin-rate-summary-main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.admin-shell-body .admin-rate-summary-main strong {
+    color: #f1f5f9;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-rate-summary-main span {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.admin-shell-body .admin-rate-summary-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-shell-body .admin-rate-price {
+    color: #e0b66a;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-rate-priority {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.admin-shell-body .admin-rate-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-rate-status.is-active {
+    background: #17382b;
+    border-color: #276749;
+    color: #86efac;
+}
+
+.admin-shell-body .admin-rate-status.is-inactive {
+    background: #252e3b;
+    border-color: #475569;
+    color: #cbd5e1;
+}
+
+.admin-shell-body .admin-details-chevron {
+    flex-shrink: 0;
+    color: #94a3b8;
+    transition: transform 0.2s ease;
+}
+
+.admin-shell-body
+.admin-management-card[open] .admin-details-chevron {
+    transform: rotate(180deg);
+}
+
+.admin-shell-body .admin-management-card-content {
+    padding: 24px;
+    border-top: 1px solid #334155;
+}
+
+/* Exchange rate history */
+
+.admin-shell-body .admin-management-details {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #334155;
+}
+
+.admin-shell-body .admin-management-details summary {
+    color: #e2e8f0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.admin-shell-body .admin-management-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.admin-shell-body .admin-management-table-scroll table {
+    width: 100%;
+    min-width: 580px;
+}
+
+/* Keyboard accessibility */
+
+.admin-shell-body .admin-management-card summary:focus-visible,
+.admin-shell-body .admin-management-details summary:focus-visible {
+    outline: 2px solid #c69a48;
+    outline-offset: 4px;
+    border-radius: 6px;
+}
+
+/* Empty state */
+
+.admin-shell-body .admin-management-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 150px;
+    padding: 24px;
+    text-align: center;
+    background: #151b24;
+    border: 1px dashed #475569;
+    border-radius: 12px;
+}
+
+.admin-shell-body .admin-management-empty h3 {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-management-empty p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* Common loading spinner */
+
+.admin-shell-body .admin-loading-spinner {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 17px;
+    height: 17px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: admin-management-spin 0.8s linear infinite;
+}
+
+@keyframes admin-management-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+    .admin-shell-body .admin-rate-summary {
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .admin-shell-body .admin-rate-summary-main {
+        flex-basis: 100%;
+    }
+
+    .admin-shell-body .admin-rate-summary-meta {
+        flex: 1;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .admin-shell-body .admin-fx-summary {
+        padding: 16px;
+    }
+
+    .admin-shell-body .admin-fx-value {
+        font-size: 21px;
+    }
+
+    .admin-shell-body .admin-rate-summary {
+        padding: 16px;
+    }
+
+    .admin-shell-body .admin-rate-summary-meta {
+        gap: 10px;
+    }
+
+    .admin-shell-body .admin-management-card-content {
+        padding: 16px;
+    }
+
+    .admin-shell-body .admin-management-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-shell-body .admin-management-actions .admin-btn {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .admin-shell-body .admin-loading-spinner {
+        animation: none;
+    }
+
+    .admin-shell-body .admin-details-chevron {
+        transition: none;
+    }
+}
+/* =========================================
+   ADMIN INQUIRIES & GUEST FEEDBACK
+   Stage 04.02
+========================================= */
+
+/* Management overview */
+
+.admin-shell-body .admin-management-overview {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 24px;
+    margin-bottom: 28px;
+    background: #151b24;
+    border: 1px solid #334155;
+    border-radius: 12px;
+}
+
+.admin-shell-body .admin-management-overview-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 54px;
+    height: 54px;
+    background: #302719;
+    border: 1px solid #70552b;
+    border-radius: 12px;
+    color: #e0b66a;
+}
+
+.admin-shell-body .admin-management-overview h2 {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-management-overview p {
+    margin: 6px 0 0;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Status badges */
+
+.admin-shell-body .admin-message-status {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 6px 12px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background: #252e3b;
+    color: #cbd5e1;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-message-status.status-new,
+.admin-shell-body .admin-message-status.status-pending {
+    background: #302719;
+    border-color: #70552b;
+    color: #fcd34d;
+}
+
+.admin-shell-body .admin-message-status.status-approved {
+    background: #17382b;
+    border-color: #276749;
+    color: #86efac;
+}
+
+.admin-shell-body .admin-message-status.status-rejected {
+    background: #351e24;
+    border-color: #7f343d;
+    color: #fca5a5;
+}
+
+.admin-shell-body .admin-message-status.status-read {
+    background: #152536;
+    border-color: #30465d;
+    color: #93c5fd;
+}
+
+/* Contact information */
+
+.admin-shell-body .admin-message-details {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 12px 20px;
+    margin: 0 0 24px;
+    font-size: 14px;
+}
+
+.admin-shell-body .admin-message-details dt {
+    color: #94a3b8;
+}
+
+.admin-shell-body .admin-message-details dd {
+    margin: 0;
+    color: #e2e8f0;
+    overflow-wrap: anywhere;
+}
+
+/* Message and review content */
+
+.admin-shell-body .admin-message-body {
+    padding: 20px;
+    margin: 20px 0;
+    background: #0e151f;
+    border: 1px solid #334155;
+    border-radius: 8px;
+}
+
+.admin-shell-body .admin-message-body h3 {
+    margin: 0 0 12px;
+    color: #f1f5f9;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-message-body p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* Inline management forms */
+
+.admin-shell-body .admin-inline-management-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 16px;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #334155;
+}
+
+.admin-shell-body
+.admin-inline-management-form .admin-form-field {
+    flex: 1;
+    min-width: 180px;
+    max-width: 320px;
+}
+
+.admin-shell-body
+.admin-inline-management-form > .admin-btn {
+    margin-top: 29px;
+}
+
+/* Review header */
+
+.admin-shell-body .admin-review-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px;
+}
+
+.admin-shell-body .admin-review-identity {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-shell-body .admin-review-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: #302719;
+    border: 1px solid #70552b;
+    border-radius: 50%;
+    color: #e0b66a;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.admin-shell-body .admin-review-person {
+    min-width: 0;
+}
+
+.admin-shell-body .admin-review-person h2 {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 16px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.admin-shell-body .admin-review-person p {
+    margin: 5px 0 0;
+    color: #94a3b8;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+/* Review rating */
+
+.admin-shell-body .admin-review-rating {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    color: #e0b66a;
+    font-size: 13px;
+}
+
+.admin-shell-body .admin-review-stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Empty state */
+
+.admin-shell-body .admin-management-empty > svg {
+    color: #c69a48;
+    margin-bottom: 4px;
+}
+
+/* Pagination */
+
+.admin-shell-body .admin-management-pagination {
+    margin-top: 24px;
+}
+
+.admin-shell-body .admin-management-pagination nav {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.admin-shell-body
+.admin-management-pagination a:focus-visible {
+    outline: 2px solid #c69a48;
+    outline-offset: 3px;
+}
+
+/* Feedback */
+
+.admin-shell-body .admin-feedback p {
+    margin: 8px 0 0;
+}
+
+/* Mobile responsive */
+
+@media (max-width: 640px) {
+
+    .admin-shell-body .admin-management-overview {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .admin-shell-body .admin-management-overview h2 {
+        font-size: 17px;
+    }
+
+    .admin-shell-body .admin-management-overview-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .admin-shell-body .admin-message-details {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .admin-shell-body .admin-message-details dd {
+        margin-bottom: 10px;
+    }
+
+    .admin-shell-body .admin-message-body {
+        padding: 16px;
+    }
+
+    .admin-shell-body .admin-review-header {
+        padding: 16px;
+    }
+
+    .admin-shell-body .admin-inline-management-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-shell-body
+    .admin-inline-management-form .admin-form-field {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .admin-shell-body
+    .admin-inline-management-form > .admin-btn {
+        width: 100%;
+        margin-top: 0;
+    }
+}

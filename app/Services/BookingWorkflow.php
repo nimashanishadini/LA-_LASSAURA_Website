@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\BookingPolicy;
 use App\Models\BookingQuote;
 use App\Models\InventoryEvent;
+use App\Models\User;
 use App\Models\Villa;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -45,6 +46,8 @@ class BookingWorkflow
 
     public function quote(int $user, Villa $room, string $start, string $end, int $adults, int $children): BookingQuote
     {
+        abort_unless(User::find($user)?->hasVerifiedEmail(), 403, 'Verify your email before requesting a quote.');
+
         return DB::transaction(function () use ($user, $room, $start, $end, $adults, $children) {
             $room = Villa::whereKey($room->id)->lockForUpdate()->firstOrFail();
             $this->available($room, $start, $end, $adults, $children);
@@ -55,6 +58,8 @@ class BookingWorkflow
 
     public function submit(int $user, string $quoteId, array $guest): Booking
     {
+        abort_unless(User::find($user)?->hasVerifiedEmail(), 403, 'Verify your email before submitting a booking.');
+
         return DB::transaction(function () use ($user, $quoteId, $guest) {
             $quote = BookingQuote::where('user_id', $user)->whereKey($quoteId)->lockForUpdate()->firstOrFail();
             $hash = hash('sha256', json_encode($guest, JSON_THROW_ON_ERROR));
@@ -64,7 +69,7 @@ class BookingWorkflow
                     throw new InventoryConflict('This quote was already submitted with different guest details.');
                 }
 
-return $existing;
+                return $existing;
             }
             if ($quote->expires_at->isPast()) {
                 throw new InventoryConflict('This quote has expired. Calculate a new quote before submitting.');
@@ -183,14 +188,14 @@ return $existing;
         InventoryEvent::create(['booking_id' => $booking->id, 'actor_id' => $actor, 'action' => $action, 'details' => $details]);
     }
 
-    private function notify(Booking $booking,string $kind): void
+    private function notify(Booking $booking, string $kind): void
     {
         // Queue failure must never undo the committed reservation.
-        DB::afterCommit(function () use ($booking,$kind) {
+        DB::afterCommit(function () use ($booking, $kind) {
             try {
-                BookingNotice::dispatch($booking->id,$kind);
+                BookingNotice::dispatch($booking->id, $kind);
             } catch (\Throwable $error) {
-                Log::error('Booking notification could not be queued.',['booking_id' => $booking->id, 'kind' => $kind, 'error_type' => get_class($error)]);
+                Log::error('Booking notification could not be queued.', ['booking_id' => $booking->id, 'kind' => $kind, 'error_type' => get_class($error)]);
             }
         });
     }
