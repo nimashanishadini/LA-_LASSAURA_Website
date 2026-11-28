@@ -15,6 +15,7 @@
       href="{{ asset('images/brand/logo.jpeg') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/customer-account.css') }}">
     @livewireStyles
 
     @stack('styles')
@@ -32,6 +33,7 @@
 
     <x-website.footer />
     <x-website.booking.modal />
+    <x-website.account-modal />
     <x-website.image-lightbox />
 
     @livewireScripts

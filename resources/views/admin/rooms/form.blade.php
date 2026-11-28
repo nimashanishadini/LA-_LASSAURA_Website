@@ -1,20 +1,561 @@
 @extends('layouts.admin')
+
 @section('title', $room->exists ? 'Edit '.$room->name : 'Add room')
+
 @section('content')
-<a class="mb-6 inline-block text-sm text-slate-400" href="{{ route('admin.rooms.index') }}">← All rooms</a>
-<form method="POST" action="{{ $room->exists ? route('admin.rooms.update', $room) : route('admin.rooms.store') }}" class="admin-panel">@csrf @if($room->exists) @method('PUT') @endif
-<h2 class="mb-5 text-xl font-semibold">Room details</h2><div class="grid gap-5 sm:grid-cols-2">
-@foreach(['name' => 'Room name', 'slug' => 'URL slug'] as $field => $label)<label class="admin-label">{{ $label }}<input class="admin-input" name="{{ $field }}" value="{{ old($field, $room->$field) }}" maxlength="120" required></label>@endforeach
-<label class="admin-label">Category<select class="admin-input" name="category" required><option value="">Select category</option>@foreach(['family' => 'Family room', 'double' => 'Double room'] as $value => $label)<option value="{{ $value }}" @selected(old('category', $room->category) === $value)>{{ $label }}</option>@endforeach</select></label>
-<label class="admin-label">Website status<select class="admin-input" name="is_active"><option value="0" @selected(!old('is_active', $room->is_active))>Draft</option><option value="1" @selected(old('is_active', $room->is_active))>Published</option></select></label>
-@foreach(['max_adults' => 'Maximum adults', 'max_children' => 'Maximum children', 'max_guests' => 'Maximum total guests'] as $field => $label)<label class="admin-label">{{ $label }}<input class="admin-input" type="number" min="{{ $field === 'max_children' ? 0 : 1 }}" max="100" name="{{ $field }}" value="{{ old($field, $room->$field) }}" placeholder="Not configured"></label>@endforeach
-</div><p class="mt-4 text-xs text-slate-400">Leave unknown limits blank. Configure all limits before publishing.</p>
-<label class="admin-label mt-5">Short description<textarea class="admin-input" name="short_description" rows="2" maxlength="500">{{ old('short_description', $room->short_description) }}</textarea></label>
-<label class="admin-label mt-5">Description<textarea class="admin-input" name="description" rows="5" maxlength="10000">{{ old('description', $room->description) }}</textarea></label>
-<fieldset class="mt-6"><legend class="mb-3 text-sm text-slate-300">Amenities</legend><div class="flex flex-wrap gap-5">@forelse($amenities as $amenity)<label class="flex items-center gap-2 text-sm"><input type="checkbox" name="amenities[]" value="{{ $amenity->id }}" @checked(in_array($amenity->id, old('amenities', $room->amenities->modelKeys())))>{{ $amenity->name }}</label>@empty<p class="text-sm text-slate-400">No amenities configured.</p>@endforelse</div></fieldset>
-<button class="admin-button mt-7">Save room</button></form>
-@if($room->exists)
-<section class="admin-panel mt-7"><h2 class="text-xl font-semibold">Room photographs</h2><p class="mt-2 text-sm text-slate-400">JPEG, PNG or WebP · up to 30 MB per image · select up to 10 images. Photographs upload one at a time. Lower display order appears first.</p>
-<form method="POST" action="{{ route('admin.rooms.images.store', $room) }}" enctype="multipart/form-data" x-data="roomPhotoUpload" @submit.prevent="upload($event)" class="my-6 flex flex-wrap items-end gap-4">@csrf<label class="admin-label">Select photographs<input type="file" class="admin-input" x-ref="photos" name="images[]" accept="image/jpeg,image/png,image/webp" multiple required></label><button class="admin-button" :disabled="uploading" x-text="uploading ? progress : 'Upload images'">Upload images</button><p x-cloak x-show="uploadError" x-text="uploadError" role="alert" class="w-full text-sm text-red-300"></p></form>
-<div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">@forelse($room->media as $image)<div class="overflow-hidden rounded-xl border border-slate-700"><img class="aspect-[4/3] w-full object-cover" src="{{ $image->url }}" alt="{{ $image->alt_text }}"><form method="POST" action="{{ route('admin.rooms.images.update', [$room, $image]) }}" class="space-y-3 p-4">@csrf @method('PATCH')<label class="admin-label">Image description<input class="admin-input" name="alt_text" maxlength="255" value="{{ $image->alt_text }}"></label><label class="admin-label">Display order<input class="admin-input" type="number" min="0" max="10000" name="sort_order" value="{{ $image->sort_order }}" required></label><label class="flex items-center gap-2 text-sm"><input type="checkbox" name="is_primary" value="1" @checked($image->is_primary)> Cover image</label><button class="admin-button">Save image</button></form><form method="POST" action="{{ route('admin.rooms.images.destroy', [$room, $image]) }}" class="px-4 pb-4" x-data @submit="if (!confirm('Remove this room photograph?')) $event.preventDefault()">@csrf @method('DELETE')<button class="text-sm text-red-300">Remove image</button></form></div>@empty<p class="text-sm text-slate-400">Upload photographs of {{ $room->name }} to begin.</p>@endforelse</div></section>@endif
+
+    <!-- Back navigation -->
+
+    <div class="mb-6">
+        <a
+            href="{{ route('admin.rooms.index') }}"
+            class="admin-room-back"
+        >
+            <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                aria-hidden="true"
+            >
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+
+            All rooms
+        </a>
+    </div>
+
+    <!-- Room details form -->
+
+    <form
+        method="POST"
+        action="{{ $room->exists
+            ? route('admin.rooms.update', $room)
+            : route('admin.rooms.store') }}"
+        x-data="{ submitting: false }"
+        @submit="submitting = true"
+        @pageshow.window="submitting = false"
+        :aria-busy="submitting"
+    >
+        @csrf
+
+        @if($room->exists)
+            @method('PUT')
+        @endif
+
+        <x-admin.forms.section
+            title="Room details"
+            description="Manage room information, guest capacity and website visibility."
+        >
+
+            <div class="admin-form-grid">
+
+                <x-admin.forms.input
+                    name="name"
+                    id="room-name"
+                    label="Room name"
+                    :value="$room->name"
+                    maxlength="120"
+                    placeholder="Enter room name"
+                    :required="true"
+                />
+
+                <x-admin.forms.input
+                    name="slug"
+                    id="room-slug"
+                    label="URL slug"
+                    :value="$room->slug"
+                    maxlength="120"
+                    placeholder="coral-double"
+                    help="The unique address used on the website."
+                    :required="true"
+                />
+
+                <x-admin.forms.select
+                    name="category"
+                    id="room-category"
+                    label="Category"
+                    :options="[
+                        'family' => 'Family room',
+                        'double' => 'Double room'
+                    ]"
+                    :value="$room->category"
+                    placeholder="Select category"
+                    :required="true"
+                />
+
+                <x-admin.forms.select
+                    name="is_active"
+                    id="room-status"
+                    label="Website status"
+                    :options="[
+                        '0' => 'Draft',
+                        '1' => 'Published'
+                    ]"
+                    :value="(int) $room->is_active"
+                    help="Published rooms can appear on the website."
+                />
+
+            </div>
+
+            <!-- Guest capacity -->
+
+            <div class="admin-room-form-group">
+
+                <h3 class="admin-room-group-title">
+                    Guest capacity
+                </h3>
+
+                <p class="admin-room-group-description">
+                    Configure the maximum number of guests allowed
+                    in this room.
+                </p>
+
+                <div class="admin-room-capacity-grid">
+
+                    <x-admin.forms.input
+                        type="number"
+                        name="max_adults"
+                        id="room-max-adults"
+                        label="Maximum adults"
+                        :value="$room->max_adults"
+                        min="1"
+                        max="100"
+                        placeholder="Not configured"
+                    />
+
+                    <x-admin.forms.input
+                        type="number"
+                        name="max_children"
+                        id="room-max-children"
+                        label="Maximum children"
+                        :value="$room->max_children"
+                        min="0"
+                        max="100"
+                        placeholder="Not configured"
+                    />
+
+                    <x-admin.forms.input
+                        type="number"
+                        name="max_guests"
+                        id="room-max-guests"
+                        label="Maximum total guests"
+                        :value="$room->max_guests"
+                        min="1"
+                        max="100"
+                        placeholder="Not configured"
+                    />
+
+                </div>
+
+                <p class="admin-form-help mt-3">
+                    Leave unknown limits blank.
+                    Configure all limits before publishing.
+                </p>
+
+            </div>
+
+            <!-- Room descriptions -->
+
+            <div class="admin-room-form-group">
+
+                <h3 class="admin-room-group-title">
+                    Room descriptions
+                </h3>
+
+                <p class="admin-room-group-description">
+                    Information displayed to guests on the website.
+                </p>
+
+                <div class="space-y-5">
+
+                    <x-admin.forms.textarea
+                        name="short_description"
+                        id="room-short-description"
+                        label="Short description"
+                        :value="$room->short_description"
+                        :rows="3"
+                        maxlength="500"
+                        placeholder="Write a short introduction..."
+                        help="Maximum 500 characters."
+                    />
+
+                    <x-admin.forms.textarea
+                        name="description"
+                        id="room-description"
+                        label="Description"
+                        :value="$room->description"
+                        :rows="6"
+                        maxlength="10000"
+                        placeholder="Describe the room, facilities and guest experience..."
+                        help="Maximum 10,000 characters."
+                    />
+
+                </div>
+
+            </div>
+
+            <!-- Amenities -->
+
+            <fieldset class="admin-room-form-group">
+
+                <legend class="admin-room-group-title">
+                    Amenities
+                </legend>
+
+                <p class="admin-room-group-description">
+                    Select the facilities available in this room.
+                </p>
+
+                @php
+                    $selectedAmenities = session()->hasOldInput()
+                        ? (array) old('amenities', [])
+                        : $room->amenities->modelKeys();
+                @endphp
+
+                <div class="admin-room-amenities-grid">
+
+                    @forelse($amenities as $amenity)
+
+                        <div class="admin-room-amenity-item">
+
+                            <x-admin.forms.checkbox
+                                name="amenities[]"
+                                :id="'room-amenity-'.$amenity->id"
+                                :label="$amenity->name"
+                                :value="$amenity->id"
+                                :checked="in_array(
+                                    $amenity->id,
+                                    $selectedAmenities
+                                )"
+                            />
+
+                        </div>
+
+                    @empty
+
+                        <p class="admin-form-help">
+                            No amenities configured.
+                        </p>
+
+                    @endforelse
+
+                </div>
+
+                <x-admin.forms.field-error name="amenities" />
+
+                <x-admin.forms.field-error name="amenities.*" />
+
+            </fieldset>
+
+            <!-- Form actions -->
+
+            <x-slot:footer>
+
+                <x-admin.forms.button
+                    variant="secondary"
+                    :href="route('admin.rooms.index')"
+                >
+                    Cancel
+                </x-admin.forms.button>
+
+                <x-admin.forms.button
+                    type="submit"
+                    :disabled="false"
+                    x-bind:disabled="submitting"
+                >
+                    <svg
+                        x-cloak
+                        x-show="submitting"
+                        class="admin-form-spinner"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9"
+                            stroke="currentColor"
+                            stroke-width="3"
+                            opacity=".25"
+                        />
+
+                        <path
+                            d="M12 3a9 9 0 0 1 9 9"
+                            stroke="currentColor"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+
+                    <span
+                        x-text="submitting
+                            ? 'Saving room...'
+                            : 'Save room'"
+                    >
+                        Save room
+                    </span>
+                </x-admin.forms.button>
+
+            </x-slot:footer>
+
+        </x-admin.forms.section>
+
+    </form>
+
+    <!-- Room photographs -->
+
+    @if($room->exists)
+
+        <div class="mt-7">
+
+            <x-admin.forms.section
+                title="Room photographs"
+                description="Manage the photographs displayed on the room page."
+            >
+
+                <div class="admin-room-upload-info">
+
+                    <p>
+                        JPEG, PNG or WebP · up to 30 MB per image ·
+                        select up to 10 images.
+                    </p>
+
+                    <p>
+                        Photographs upload one at a time.
+                        Lower display order appears first.
+                    </p>
+
+                </div>
+
+                <!-- Upload images -->
+
+                <form
+                    method="POST"
+                    action="{{ route('admin.rooms.images.store', $room) }}"
+                    enctype="multipart/form-data"
+                    x-data="roomPhotoUpload"
+                    @submit.prevent="upload($event)"
+                    class="admin-room-upload-form"
+                    :aria-busy="uploading"
+                >
+                    @csrf
+
+                    <x-admin.forms.input
+                        type="file"
+                        name="images[]"
+                        id="room-photographs"
+                        label="Select photographs"
+                        x-ref="photos"
+                        accept="image/jpeg,image/png,image/webp"
+                        multiple
+                        :required="true"
+                        :use-old="false"
+                    />
+
+                    <x-admin.forms.button
+                        type="submit"
+                        x-bind:disabled="uploading"
+                    >
+                        <span
+                            x-text="uploading
+                                ? progress
+                                : 'Upload images'"
+                        >
+                            Upload images
+                        </span>
+                    </x-admin.forms.button>
+
+                    <p
+                        x-cloak
+                        x-show="uploadError"
+                        x-text="uploadError"
+                        role="alert"
+                        class="admin-field-error admin-form-full"
+                    ></p>
+
+                    <x-admin.forms.field-error name="images" />
+
+                    <x-admin.forms.field-error name="images.*" />
+
+                </form>
+
+                <!-- Existing photographs -->
+
+                <div class="admin-room-photo-grid">
+
+                    @forelse($room->media as $image)
+
+                        <article class="admin-room-photo-card">
+
+                            <div class="admin-room-photo-preview">
+
+                                <img
+                                    src="{{ $image->url }}"
+                                    alt="{{ $image->alt_text }}"
+                                    loading="lazy"
+                                >
+
+                                @if($image->is_primary)
+                                    <span class="admin-room-cover-badge">
+                                        Cover image
+                                    </span>
+                                @endif
+
+                            </div>
+
+                            <!-- Update image -->
+
+                            <form
+                                method="POST"
+                                action="{{ route(
+                                    'admin.rooms.images.update',
+                                    [$room, $image]
+                                ) }}"
+                                class="admin-room-photo-form"
+                                x-data="{ saving: false }"
+                                @submit="saving = true"
+                                @pageshow.window="saving = false"
+                            >
+                                @csrf
+                                @method('PATCH')
+
+                                <x-admin.forms.input
+                                    name="alt_text"
+                                    :id="'image-alt-'.$image->id"
+                                    label="Image description"
+                                    :value="$image->alt_text"
+                                    maxlength="255"
+                                    :use-old="false"
+                                    :show-errors="false"
+                                />
+
+                                <x-admin.forms.input
+                                    type="number"
+                                    name="sort_order"
+                                    :id="'image-order-'.$image->id"
+                                    label="Display order"
+                                    :value="$image->sort_order"
+                                    min="0"
+                                    max="10000"
+                                    :required="true"
+                                    :use-old="false"
+                                    :show-errors="false"
+                                />
+
+                                <x-admin.forms.checkbox
+                                    name="is_primary"
+                                    :id="'image-primary-'.$image->id"
+                                    label="Cover image"
+                                    value="1"
+                                    :checked="$image->is_primary"
+                                />
+
+                                <x-admin.forms.button
+                                    type="submit"
+                                    class="w-full"
+                                    x-bind:disabled="saving"
+                                >
+                                    <span
+                                        x-text="saving
+                                            ? 'Saving...'
+                                            : 'Save image'"
+                                    >
+                                        Save image
+                                    </span>
+                                </x-admin.forms.button>
+
+                            </form>
+
+                            <!-- Remove image -->
+
+                            <form
+                                method="POST"
+                                action="{{ route(
+                                    'admin.rooms.images.destroy',
+                                    [$room, $image]
+                                ) }}"
+                                class="admin-room-photo-delete"
+                                x-data="{ removing: false }"
+                                @pageshow.window="removing = false"
+                                @submit="
+                                    if (!confirm('Remove this room photograph?')) {
+                                        $event.preventDefault();
+                                    } else {
+                                        removing = true;
+                                    }
+                                "
+                            >
+                                @csrf
+                                @method('DELETE')
+
+                                <x-admin.forms.button
+                                    type="submit"
+                                    variant="danger"
+                                    class="w-full"
+                                    x-bind:disabled="removing"
+                                >
+                                    <span
+                                        x-text="removing
+                                            ? 'Removing...'
+                                            : 'Remove image'"
+                                    >
+                                        Remove image
+                                    </span>
+                                </x-admin.forms.button>
+
+                            </form>
+
+                        </article>
+
+                    @empty
+
+                        <div class="admin-room-photo-empty">
+
+                            <svg
+                                width="40"
+                                height="40"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    x="3"
+                                    y="3"
+                                    width="18"
+                                    height="18"
+                                    rx="2"
+                                />
+
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+
+                                <path d="m21 15-5-5L5 21"/>
+                            </svg>
+
+                            <h3>No photographs yet</h3>
+
+                            <p>
+                                Upload photographs of
+                                {{ $room->name }} to begin.
+                            </p>
+
+                        </div>
+
+                    @endforelse
+
+                </div>
+
+            </x-admin.forms.section>
+
+        </div>
+
+    @endif
+
 @endsection

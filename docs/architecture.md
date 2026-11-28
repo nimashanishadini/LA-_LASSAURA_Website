@@ -263,3 +263,11 @@ Verified with isolated SQLite fixtures in headless Chrome: all seven steps,
 inline registration, quote, pending submission, history, status refresh and
 pending cancellation completed without page navigation or JavaScript errors.
 Mobile dialog was checked at 390px; application/customer database was not used.
+
+
+## Stage 04.01 security update
+
+See [authentication/security acceptance](stage-04-authentication.md). Email verification
+is now OTP-based; customer booking and admin operations require verified accounts.
+Popup/standalone login, session expiry, reset and role checks are covered by tests.
+Current local mailer remains log; SMTP provider selection/live delivery is pending.

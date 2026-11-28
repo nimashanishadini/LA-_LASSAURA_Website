@@ -1,25 +1,86 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('layouts.customer-auth')
 
-    <form method="POST" action="{{ route('password.email') }}">
+@section('title', 'Forgot Password')
+
+@section('heading', 'Forgot Password?')
+
+@section('content')
+
+<div x-data="{ submitting: false }"
+     @pageshow.window="submitting = false">
+
+    <p class="customer-centered-intro">
+        Enter your registered email address and
+        we'll send you a link to reset your password.
+    </p>
+
+    @if (session('status'))
+
+        <div class="customer-centered-success" role="status">
+            {{ session('status') }}
+        </div>
+
+    @endif
+
+    <form method="POST"
+          action="{{ route('password.email') }}"
+          @submit="submitting = true">
+
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="customer-centered-field">
+
+            <label for="email">Email Address</label>
+
+            <input
+                id="email"
+                name="email"
+                type="email"
+                value="{{ old('email') }}"
+                placeholder="Enter your email address"
+                autocomplete="email"
+                required
+                autofocus
+            >
+
+            @error('email')
+
+                <p class="customer-centered-error" role="alert">
+                    {{ $message }}
+                </p>
+
+            @enderror
+
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
+        <button type="submit"
+                class="customer-centered-primary"
+                :disabled="submitting"
+                x-text="submitting
+                    ? 'Sending reset link...'
+                    : 'Send Password Reset Link'">
+
+            Send Password Reset Link
+
+        </button>
+
     </form>
-</x-guest-layout>
+
+    <div class="customer-centered-help">
+
+        If you don't receive the email, please
+        check your spam or junk folder.
+
+    </div>
+
+    <a href="{{ route('login') }}"
+       class="customer-centered-secondary">
+
+        Back to Sign In
+
+    </a>
+
+</div>
+
+@endsection

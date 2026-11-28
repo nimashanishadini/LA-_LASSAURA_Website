@@ -9,10 +9,12 @@ use App\Models\User;
 use App\Models\Villa;
 use App\Models\VillaNight;
 use App\Models\VillaRate;
+use App\Notifications\EmailOtpNotification;
 use App\Services\Availability;
 use App\Services\BookingWorkflow;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class BookingWorkflowTest extends TestCase
@@ -198,9 +200,13 @@ class BookingWorkflowTest extends TestCase
     {
         $this->get('/booking?room=coral')->assertRedirect(route('home', ['room' => 'coral', 'booking' => 1]));
         $this->get('/login')->assertOk()->assertSee('Create an account');
+        Notification::fake();
         $this->postJson('/register', ['name' => 'New guest', 'email' => 'new@example.com', 'password' => 'password', 'password_confirmation' => 'password'])->assertCreated()->assertJsonStructure(['user' => ['name', 'email'], 'csrf_token']);
-        $room = $this->room();
         $user = auth()->user();
+        $code = Notification::sent($user, EmailOtpNotification::class)->last()->code;
+        $this->postJson(route('verification.verify'), ['code' => $code])->assertOk();
+        $room = $this->room();
+        $user = $user->fresh();
         app(BookingWorkflow::class)->submit($user->id, $this->quote($user, $room)->id, $this->guest($user));
         $this->from('/profile')->delete('/profile', ['password' => 'password'])->assertSessionHasErrorsIn('userDeletion', 'password');
         $this->assertDatabaseHas('users', ['id' => $user->id]);

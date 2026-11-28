@@ -29,4 +29,14 @@ class BookingPopupTest extends TestCase
         $this->postJson('/login', ['email' => 'no@example.com', 'password' => 'wrong'])->assertUnprocessable();
         $this->postJson('/register', ['name' => 'Guest', 'email' => 'bad', 'password' => 'short', 'password_confirmation' => 'different'])->assertUnprocessable()->assertJsonValidationErrors(['email', 'password']);
     }
+
+    public function test_header_account_dialog_is_available_without_starting_a_booking(): void
+    {
+        $this->get('/')->assertOk()->assertSee('Sign In / Create Account')
+            ->assertSee('account-modal-title')->assertSee('id="account-auth-email"', false)
+            ->assertSee('id="popup-auth-email"', false)->assertSee('id="account-email-code"', false);
+
+        $this->actingAs(User::factory()->create())->get('/')->assertOk()
+            ->assertSee('My Account')->assertSee('Sign out / use another account');
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\EmailVerification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,10 +47,11 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         $request->session()->regenerate();
+        $request->session()->put('auth.last_activity', now()->timestamp);
         if ($request->expectsJson()) {
-            return response()->json(['user' => $user->only(['name', 'email']), 'csrf_token' => $request->session()->token()], 201);
+            return response()->json(['user' => array_merge($user->only(['name', 'email']), ['email_verified' => $user->hasVerifiedEmail()]), 'verification' => app(EmailVerification::class)->state($user), 'csrf_token' => $request->session()->token()], 201);
         }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->route('verification.notice');
     }
 }

@@ -138,6 +138,10 @@
 
             </div>
 
+            <button type="button" @click="$dispatch('open-account')" class="inline-flex min-h-[48px] items-center gap-2 text-sm font-medium hover:text-dark-gold" aria-haspopup="dialog">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
+                @auth My Account @else Sign In @endauth
+            </button>
             {{-- Desktop Booking Button --}}
             <button
                 type="button"
@@ -261,6 +265,7 @@
 
         </div>
 
+        <button type="button" @click="mobileOpen = false; $dispatch('open-account')" class="mb-3 w-full border border-navy px-6 py-3 text-sm font-medium" aria-haspopup="dialog">@auth My Account @else Sign In / Create Account @endauth</button>
         {{-- Mobile Booking Button --}}
         <button
             type="button"

@@ -1,3 +1,5 @@
+import { accountPopup } from './account-popup';
+window.accountPopup = accountPopup;
 import { bookingPopup } from './booking-popup';
 window.bookingPopup = bookingPopup;
 
@@ -50,4 +52,9 @@ window.roomPhotoUpload = () => ({
 
 if (document.getElementById('room-calendar')) {
     import('./room-calendar');
+}
+if (document.getElementById('villa-timeline')) {
+    import('./admin-villa-timeline').then(({ initVillaTimeline }) => {
+        initVillaTimeline();
+    });
 }

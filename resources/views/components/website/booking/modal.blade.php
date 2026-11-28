@@ -1,6 +1,8 @@
 @php
     $bookingConfig = [
-        'user' => auth()->user()?->only(['name', 'email']), 'csrf' => csrf_token(), 'today' => now('Asia/Colombo')->toDateString(),
+        'user' => auth()->check() ? array_merge(auth()->user()->only(['name','email']), ['email_verified'=>auth()->user()->hasVerifiedEmail()]) : null,
+        'verification' => auth()->check() && !auth()->user()->hasVerifiedEmail() ? app(\App\Services\EmailVerification::class)->state(auth()->user()) : null,
+        'verifyEmail' => route('verification.verify'), 'resendEmail' => route('verification.send'), 'csrf' => csrf_token(), 'today' => now('Asia/Colombo')->toDateString(),
         'availability' => route('availability'), 'login' => route('login'), 'register' => route('register'),
         'quote' => route('bookings.quote'), 'submit' => route('bookings.store'), 'history' => route('bookings.index'),
         'quoteShow' => route('bookings.quote.show', '__quote__'), 'show' => route('bookings.show', '__reference__'),
@@ -9,17 +11,17 @@
 @endphp
 <div x-data="bookingPopup(@js($bookingConfig))" @open-booking.window="openModal($event.detail || {})">
     <dialog x-ref="dialog" @cancel.prevent="closeModal()" @click.self="closeModal()" aria-labelledby="booking-popup-title"
-        class="fixed inset-0 m-auto max-h-[92dvh] w-[calc(100%-2rem)] max-w-[1024px] overflow-y-auto border-0 booking-design bg-ivory p-0 text-navy shadow-2xl backdrop:bg-[#071726]/75">
+        class="fixed inset-0 m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-[680px] overflow-y-auto border-0 booking-design booking-compact bg-ivory p-0 text-navy shadow-2xl backdrop:bg-[#071726]/75">
         <div class="booking-content">
             <div class="flex items-center justify-between gap-5">
-                <h2 id="booking-popup-title" class="font-heading text-[34px] leading-tight sm:text-[40px]" x-text="mode === 'history' ? 'Your requests' : 'Plan your stay'"></h2>
+                <h2 id="booking-popup-title" class="font-heading text-[26px] leading-tight sm:text-[30px]" x-text="mode === 'history' ? 'Your requests' : 'Plan your stay'"></h2>
                 <button type="button" aria-label="Close booking popup" @click="closeModal()" :disabled="busy" class="flex h-10 w-10 shrink-0 items-center justify-center text-[28px] font-light disabled:opacity-40">×</button>
             </div>
             <div class="booking-notice">
                 Choose your room and review current rates. Your request is confirmed only after approval by the property. No payment is collected here.
             </div>
             <div x-show="mode === 'flow'" class="booking-progress" role="progressbar" aria-label="Booking progress" aria-valuemin="1" aria-valuemax="7" :aria-valuenow="step">
-                <template x-for="part in 7" :key="part"><span :class="part <= step ? 'bg-[#a17c36]' : 'bg-[#ded9cd]'" class="h-[6px]"></span></template>
+                <template x-for="part in 7" :key="part"><span :class="part <= step ? 'bg-[#a17c36]' : 'bg-[#ded9cd]'" class="h-[3px]"></span></template>
             </div>
             <div class="booking-step-heading">
                 <p class="text-[12px] font-semibold uppercase tracking-[0.28em] text-dark-gold sm:text-[14px]" x-show="mode === 'flow'" x-text="'Step ' + step + ' of 7 · ' + titles[step-1]"></p>
@@ -29,17 +31,16 @@
             <p role="status" x-show="notice" x-text="notice" x-cloak class="mb-5 border border-brand-border bg-stone p-4 text-sm"></p>
             <p role="status" x-show="busy" x-cloak class="mb-4 text-sm text-[#42566e]">Please wait…</p>
             <div x-show="mode === 'flow'">
-                <form x-show="step === 1" @submit.prevent="go(2)" class="space-y-6">
-                    
-                    <div class="grid gap-6 sm:grid-cols-2">
+                <form x-show="step === 1" @submit.prevent="go(2)" class="space-y-4">
+                    <div class="grid gap-4 sm:grid-cols-2">
                         <label class="block text-sm" for="popup-check-in">Check-in<input id="popup-check-in" type="date" x-model="checkIn" :min="today" @change="if(checkOut && checkOut <= checkIn) checkOut = ''" required class="mt-2 block w-full border-brand-border bg-transparent px-3 py-3 text-sm focus:border-gold focus:ring-gold"></label>
                         <label class="block text-sm" for="popup-check-out">Check-out<input id="popup-check-out" type="date" x-model="checkOut" :min="minCheckOut" required class="mt-2 block w-full border-brand-border bg-transparent px-3 py-3 text-sm focus:border-gold focus:ring-gold"></label>
                     </div>
                     <p class="booking-help" x-text="(nights ? nights + ' nights · ' : '') + 'Choose your preferred dates. Availability is checked in the next step.'"></p>
                     <div class="booking-actions justify-end"><button class="bg-gold px-7 py-3.5 text-sm font-medium">Continue <span aria-hidden="true">⟶</span></button></div>
                 </form>
-                <form x-show="step === 2" x-cloak @submit.prevent="findRooms()" class="space-y-6">
-                    <div class="grid gap-6 sm:grid-cols-3">
+                <form x-show="step === 2" x-cloak @submit.prevent="findRooms()" class="space-y-4">
+                    <div class="grid gap-4 sm:grid-cols-3">
                         <label for="popup-adults">Adults<select id="popup-adults" x-model.number="adults" required><template x-for="count in 100" :key="count"><option :value="count" x-text="count"></option></template></select></label>
                         <label for="popup-children">Children<select id="popup-children" x-model.number="children" required><template x-for="count in 101" :key="count"><option :value="count - 1" x-text="count - 1"></option></template></select></label>
                         <label for="popup-room-count">Rooms<select id="popup-room-count" disabled aria-describedby="popup-room-help"><option>1</option></select></label>
@@ -61,21 +62,8 @@
                     </label></template></div>
                     <div class="booking-actions"><button type="button" @click="go(3)" class="booking-back">← Back</button><button type="button" @click="go(5)" :disabled="!selected || busy" class="bg-gold px-7 py-3.5 text-sm disabled:opacity-40">Continue <span aria-hidden="true">⟶</span></button></div>
                 </div>
-                <div x-show="step === 5" x-cloak>
-                    <div x-show="!user">
-                        <p class="body-copy mb-5">Sign in or create an account here to receive updates and manage your request.</p>
-                        <div class="mb-6 flex gap-5 text-sm"><button type="button" @click="authMode='login'" :aria-pressed="authMode === 'login'" :class="authMode === 'login' ? 'border-b border-gold font-medium' : ''">Sign in</button><button type="button" @click="authMode='register'" :aria-pressed="authMode === 'register'" :class="authMode === 'register' ? 'border-b border-gold font-medium' : ''">Create account</button></div>
-                        <form @submit.prevent="authenticate()" class="space-y-5">
-                            <label x-show="authMode === 'register'" for="popup-auth-name" class="block text-sm">Your name<input id="popup-auth-name" x-model="authName" :required="authMode === 'register'" autocomplete="name" maxlength="255" class="mt-2 block w-full border-brand-border bg-transparent px-3 py-3 text-sm"></label>
-                            <label for="popup-auth-email" class="block text-sm">Email address<input id="popup-auth-email" type="email" x-model="authEmail" autocomplete="username" maxlength="255" required class="mt-2 block w-full border-brand-border bg-transparent px-3 py-3 text-sm"></label>
-                            <label for="popup-auth-password" class="block text-sm">Password<input id="popup-auth-password" type="password" x-model="password" :autocomplete="authMode === 'register' ? 'new-password' : 'current-password'" required class="mt-2 block w-full border-brand-border bg-transparent px-3 py-3 text-sm"></label>
-                            <label x-show="authMode === 'register'" for="popup-auth-confirm" class="block text-sm">Confirm password<input id="popup-auth-confirm" type="password" x-model="passwordConfirmation" :required="authMode === 'register'" autocomplete="new-password" class="mt-2 block w-full border-brand-border bg-transparent px-3 py-3 text-sm"></label>
-                            <div class="flex flex-wrap justify-between gap-4"><a href="{{ route('password.request') }}" class="py-3 text-xs underline">Forgot password?</a><button :disabled="busy" class="bg-gold px-7 py-3.5 text-sm disabled:opacity-40" x-text="authMode === 'register' ? 'Create account & continue →' : 'Sign in & continue →'"></button></div>
-                        </form>
-                    </div>
-                </div>
-                <form x-show="step === 5 && user" x-cloak @submit.prevent="makeQuote()" class="space-y-5">
-
+                <x-website.account-fields />
+                <form x-show="step === 5 && user && user.email_verified" x-cloak @submit.prevent="makeQuote()" class="space-y-4">
                     <label for="popup-guest-name" class="block text-sm">Full name<input id="popup-guest-name" x-model="name" autocomplete="name" maxlength="120" required class="mt-2 block w-full border-brand-border bg-transparent px-3 py-3 text-sm"></label>
                     <label for="popup-guest-email">Email address<input id="popup-guest-email" type="email" :value="user?.email || ''" readonly autocomplete="email"><span class="mt-2 block text-xs text-[#42566e]">Linked to your signed-in account.</span></label>
                     <label for="popup-phone" class="block text-sm">International phone number<input id="popup-phone" type="tel" x-model="phone" autocomplete="tel" placeholder="+94…" maxlength="30" required class="mt-2 block w-full border-brand-border bg-transparent px-3 py-3 text-sm"></label>
